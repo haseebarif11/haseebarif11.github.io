@@ -1097,8 +1097,8 @@ html[data-theme="light"] .hero-eyebrow{
   </div>
   <div class="edu-grid" id="cert-grid">
 
-    <!-- VISIBLE: first 4 -->
-    <a class="edu-card rv cert-card" href="https://graphacademy.neo4j.com/c/neo4j-certified-professional/" target="_blank" rel="noopener" style="text-decoration:none;display:block;cursor:pointer;">
+    <!-- VISIBLE: first 3 -->
+    <a class="edu-card rv cert-card" href="https://graphacademy.neo4j.com/c/neo4j-certified-professional" target="_blank" rel="noopener" style="text-decoration:none;display:block;cursor:pointer;">
       <div class="edu-deg" style="color:var(--text);">Neo4j Certified Professional</div>
       <div class="edu-inst" style="color:var(--muted2);">Neo4j</div>
       <div class="edu-meta"><span>Credential</span></div>
@@ -1119,7 +1119,8 @@ html[data-theme="light"] .hero-eyebrow{
       <div class="chips"><span class="chip">AI</span><span class="chip">Machine Learning</span><span class="chip">OpenAI</span></div>
     </a>
 
-    <a class="edu-card rv cert-card" href="https://verify.skilljar.com/c/gwu9k3ssg5dm" target="_blank" rel="noopener" style="text-decoration:none;display:block;cursor:pointer;">
+    <!-- HIDDEN by default -->
+    <a class="edu-card rv cert-card hidden-cert" href="https://verify.skilljar.com/c/gwu9k3ssg5dm" target="_blank" rel="noopener" style="text-decoration:none;display:none;cursor:pointer;">
       <div class="edu-deg" style="color:var(--text);">Claude 101</div>
       <div class="edu-inst" style="color:var(--muted2);">Anthropic</div>
       <div class="edu-meta"><span>Jun 2026</span><span>Credential: gwu9k3ssg5dm</span></div>
@@ -1620,8 +1621,8 @@ window.showToast=showToast;
     setupBorderCard(el.querySelector('.proj-card'), PROJ_COLORS[i%PROJ_COLORS.length], 0);
   });
 
-  /* ── Education cards ────────────────────────────────────────── */
-  document.querySelectorAll('.edu-card').forEach((el,i)=>{
+  /* ── Education cards only (not cert cards) ─────────────────── */
+  document.querySelectorAll('.edu-card:not(.cert-card)').forEach((el,i)=>{
     setupBorderCard(el, EDU_COLORS[i%EDU_COLORS.length], 0);
   });
 
