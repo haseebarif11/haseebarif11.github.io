@@ -14,12 +14,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 <style>
 :root{
-  --bg:#020817;--surface:#0a0f2e;
+  --bg:#030c1a;--surface:#0a1228;
   --cyan:#67e8f9;--purple:#a5b4fc;--pink:#c4b5fd;--amber:#7dd3fc;--green:#34d399;
   --text:#e2e8f0;--muted:#1e2d4a;--muted2:#6478a0;
   --border:rgba(255,255,255,.09);
-  --cardGrad:linear-gradient(165deg,rgb(10,15,46) 0%,rgb(5,10,36) 45%);
-  --navBg:rgba(2,8,23,.88);--mobBg:rgba(2,8,23,.99);
+  --cardGrad:linear-gradient(165deg,rgb(12,18,52) 0%,rgb(6,12,40) 45%);
+  --navBg:rgba(3,12,26,.88);--mobBg:rgba(3,12,26,.99);
 }
 html[data-theme="light"]{
   --bg:#f0f6ff;--surface:#e8f0fe;
@@ -218,9 +218,11 @@ section::before{
 .stat-n{font-family:'Syne', sans-serif;font-size:2.1rem;font-weight:700;background:linear-gradient(135deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;letter-spacing:-.04em;}
 #sn-intern{font-size:1.9rem;letter-spacing:0;}
 .stat-l{font-family:'JetBrains Mono', monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2);margin-top:8px;}
-.profile-card{background:linear-gradient(165deg,rgba(10,15,46,.96),rgba(5,10,36,.88));border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:transform .3s,box-shadow .3s,border-color .4s;position:relative;}
+.profile-card{background:linear-gradient(165deg,rgba(12,18,52,.96),rgba(6,12,40,.88));border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:transform .3s,box-shadow .3s,border-color .4s;position:relative;}
 .profile-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(103,232,249,.12),transparent 38%);pointer-events:none;}
 .profile-card:hover{transform:translateY(-6px);box-shadow:0 24px 48px rgba(0,0,0,.35);}
+html[data-theme="light"] .profile-card{background:linear-gradient(165deg,#f0f8ff 0%,#e2eeff 45%);border-color:rgba(59,130,246,.2);}
+html[data-theme="light"] .profile-card::before{background:radial-gradient(circle at 50% 0%,rgba(59,130,246,.08),transparent 38%);}
 .pc-top{height:112px;background:linear-gradient(135deg,rgba(59,130,246,.22),rgba(56,189,248,.13),rgba(165,243,252,.1));position:relative;}
 .pc-avatar{position:absolute;bottom:-36px;left:50%;transform:translateX(-50%);width:76px;height:76px;border-radius:50%;background:var(--cardGrad);border:2px solid rgba(59,130,246,.5);display:flex;align-items:center;justify-content:center;font-family:'Sora', sans-serif;font-size:1.8rem;font-weight:700;box-shadow:0 0 0 4px rgba(59,130,246,.08),0 0 24px rgba(59,130,246,.2);}
 .av-txt{background:linear-gradient(135deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
@@ -276,8 +278,8 @@ a.proj-card-link:focus{outline:2px solid var(--cyan);outline-offset:3px;}
 .pill:nth-child(5n+5){color:var(--pink);background:rgba(244,114,182,.07);border-color:rgba(244,114,182,.25);}
 .proj-card:hover .pill{transform:translateY(-1px);}
 .proj-ft{display:flex;justify-content:space-between;align-items:center;padding-top:14px;margin-top:auto;}
-.proj-lnk{display:flex;align-items:center;gap:6px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--muted2);text-decoration:none;transition:color .2s;}
-.proj-lnk:hover{color:var(--cyan);}
+.proj-lnk{display:flex;align-items:center;gap:6px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#fbbf24;text-decoration:none;transition:color .2s;}
+.proj-lnk:hover{color:#fde68a;}
 .proj-lnk svg{transition:transform .2s;}
 .proj-lnk:hover svg{transform:translate(3px,-3px);}
 .p-stat{font-size:.63rem;padding:3px 9px;border-radius:99px;font-weight:600;}
@@ -629,9 +631,9 @@ html[data-theme="dark"] .edu-card:hover{
   cursor:default;
 }
 html[data-theme="light"] #neural-canvas{
-  mix-blend-mode:normal;
-  opacity:.9;
-  filter:saturate(1.35) contrast(1.18);
+  mix-blend-mode:multiply;
+  opacity:1;
+  filter:saturate(2.2) contrast(1.5) brightness(0.55) invert(1);
 }
 @media(max-width:900px){
   #neural-canvas{ opacity:.85; }
@@ -1096,52 +1098,59 @@ html[data-theme="light"] .hero-eyebrow{
   <div class="edu-grid" id="cert-grid">
 
     <!-- VISIBLE: first 4 -->
+    <a class="edu-card rv cert-card" href="https://graphacademy.neo4j.com/c/neo4j-certified-professional/" target="_blank" rel="noopener" style="text-decoration:none;display:block;cursor:pointer;">
+      <div class="edu-deg" style="color:var(--text);">Neo4j Certified Professional</div>
+      <div class="edu-inst" style="color:var(--muted2);">Neo4j</div>
+      <div class="edu-meta"><span>Credential</span></div>
+      <div class="chips"><span class="chip">Graph DB</span><span class="chip">Cypher</span><span class="chip">Data Modeling</span><span class="chip">Neo4j</span></div>
+    </a>
+
     <a class="edu-card rv cert-card" href="https://academy.openai.com/public/certificate/2ktff5e124" target="_blank" rel="noopener" style="text-decoration:none;display:block;cursor:pointer;">
-      <div class="edu-deg">Agents and Workflows</div>
-      <div class="edu-inst">OpenAI</div>
+      <div class="edu-deg" style="color:var(--text);">Agents and Workflows</div>
+      <div class="edu-inst" style="color:var(--muted2);">OpenAI</div>
       <div class="edu-meta"><span>Jun 2026</span><span>Credential: 2ktff5e124</span></div>
       <div class="chips"><span class="chip">AI Agents</span><span class="chip">Workflows</span><span class="chip">OpenAI</span></div>
     </a>
 
     <a class="edu-card rv cert-card" href="https://academy.openai.com/public/certificate/puxwd6lr7l" target="_blank" rel="noopener" style="text-decoration:none;display:block;cursor:pointer;">
-      <div class="edu-deg">AI Foundations</div>
-      <div class="edu-inst">OpenAI</div>
+      <div class="edu-deg" style="color:var(--text);">AI Foundations</div>
+      <div class="edu-inst" style="color:var(--muted2);">OpenAI</div>
       <div class="edu-meta"><span>Jun 2026</span><span>Credential: puxwd6lr7l</span></div>
       <div class="chips"><span class="chip">AI</span><span class="chip">Machine Learning</span><span class="chip">OpenAI</span></div>
     </a>
 
     <a class="edu-card rv cert-card" href="https://verify.skilljar.com/c/gwu9k3ssg5dm" target="_blank" rel="noopener" style="text-decoration:none;display:block;cursor:pointer;">
-      <div class="edu-deg">Claude 101</div>
-      <div class="edu-inst">Anthropic</div>
+      <div class="edu-deg" style="color:var(--text);">Claude 101</div>
+      <div class="edu-inst" style="color:var(--muted2);">Anthropic</div>
       <div class="edu-meta"><span>Jun 2026</span><span>Credential: gwu9k3ssg5dm</span></div>
       <div class="chips"><span class="chip">Claude</span><span class="chip">LLM</span><span class="chip">Anthropic</span></div>
     </a>
 
-    <a class="edu-card rv cert-card" href="https://verify.skilljar.com/c/oboayu8hwqjh" target="_blank" rel="noopener" style="text-decoration:none;display:block;cursor:pointer;">
-      <div class="edu-deg">Claude Platform 101</div>
-      <div class="edu-inst">Anthropic</div>
+    <!-- HIDDEN by default -->
+    <a class="edu-card rv cert-card hidden-cert" href="https://verify.skilljar.com/c/oboayu8hwqjh" target="_blank" rel="noopener" style="text-decoration:none;display:none;cursor:pointer;">
+      <div class="edu-deg" style="color:var(--text);">Claude Platform 101</div>
+      <div class="edu-inst" style="color:var(--muted2);">Anthropic</div>
       <div class="edu-meta"><span>Jun 2026</span><span>Credential: oboayu8hwqjh</span></div>
       <div class="chips"><span class="chip">Claude API</span><span class="chip">Platform</span><span class="chip">Anthropic</span></div>
     </a>
 
-    <!-- HIDDEN by default -->
     <a class="edu-card rv cert-card hidden-cert" href="https://verify.skilljar.com/c/j6mppqbpg6y9" target="_blank" rel="noopener" style="text-decoration:none;display:none;cursor:pointer;">
-      <div class="edu-deg">Claude Code in Action</div>
-      <div class="edu-inst">Anthropic</div>
+      <div class="edu-deg" style="color:var(--text);">Claude Code in Action</div>
+      <div class="edu-inst" style="color:var(--muted2);">Anthropic</div>
       <div class="edu-meta"><span>Jun 2026</span><span>Credential: j6mppqbpg6y9</span></div>
       <div class="chips"><span class="chip">Claude Code</span><span class="chip">Coding AI</span><span class="chip">Anthropic</span></div>
     </a>
 
     <a class="edu-card rv cert-card hidden-cert" href="https://graphacademy.neo4j.com/c/21680346-b711-468c-8a05-42dc2627ad2e/" target="_blank" rel="noopener" style="text-decoration:none;display:none;cursor:pointer;">
-      <div class="edu-deg">Graph Data Modeling Fundamentals</div>
-      <div class="edu-inst">Neo4j</div>
+      <div class="edu-deg" style="color:var(--text);">Graph Data Modeling Fundamentals</div>
+      <div class="edu-inst" style="color:var(--muted2);">Neo4j</div>
       <div class="edu-meta"><span>Jun 2026</span></div>
       <div class="chips"><span class="chip">Graph Databases</span><span class="chip">Data Modeling</span><span class="chip">Neo4j</span></div>
     </a>
 
     <a class="edu-card rv cert-card hidden-cert" href="https://graphacademy.neo4j.com/c/0a401c76-3c57-4f30-b470-9584d01ff6a1/" target="_blank" rel="noopener" style="text-decoration:none;display:none;cursor:pointer;">
-      <div class="edu-deg">Neo4j Fundamentals</div>
-      <div class="edu-inst">Neo4j</div>
+      <div class="edu-deg" style="color:var(--text);">Neo4j Fundamentals</div>
+      <div class="edu-inst" style="color:var(--muted2);">Neo4j</div>
       <div class="edu-meta"><span>Jun 2026</span></div>
       <div class="chips"><span class="chip">Cypher</span><span class="chip">Graph DB</span><span class="chip">Neo4j</span></div>
     </a>
