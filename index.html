@@ -749,6 +749,19 @@ html[data-theme="light"] .hero-eyebrow{
 .btn-p{box-shadow:0 0 0 1px rgba(103,232,249,.15), 0 12px 32px rgba(56,189,248,.18);}
 .btn-p:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(103,232,249,.3), 0 16px 40px rgba(56,189,248,.28);}
 @media(max-width:900px){.hero{max-width:100%;}}
+
+/* Make GitHub buttons in projects golden */
+.proj-card .p-git,
+.proj-card a[href*="github.com"] {
+    background: rgba(251,191,36,0.1) !important;
+    border-color: rgba(251,191,36,0.3) !important;
+    color: #fbbf24 !important;
+}
+.proj-card a[href*="github.com"]:hover {
+    background: rgba(251,191,36,0.2) !important;
+    box-shadow: 0 4px 12px rgba(251,191,36,0.2) !important;
+}
+
 </style>
 </head>
 <body>
@@ -1086,6 +1099,64 @@ html[data-theme="light"] .hero-eyebrow{
   </div>
 </section>
 
+<!-- CERTIFICATIONS -->
+<section id="certifications" style="padding-top:0;">
+  <div class="sec-hd">
+    <div class="sec-lbl">Licenses & Certifications</div>
+    <h2 class="sec-ttl rv">Professional <span class="shine-word">Certificates</span></h2>
+  </div>
+  <div class="edu-grid" id="cert-grid">
+    <a href="#" target="_blank" style="text-decoration:none; display:block; cursor:pointer;" class="edu-card rv cert-item">
+      <span class="edu-badge eb-cert">Neo4j</span>
+      <div class="edu-deg">Neo4j Certified Professional</div>
+      <div class="edu-inst">Neo4j</div>
+      <div class="edu-meta"><span>Credential</span></div>
+      <div class="chips"><span class="chip">Graph Databases</span><span class="chip">Cypher</span><span class="chip">Data Modeling</span><span class="chip">Architecture</span></div>
+    </a>
+    <a href="#" target="_blank" style="text-decoration:none; display:block; cursor:pointer;" class="edu-card rv cert-item">
+      <span class="edu-badge eb-cert">Neo4j</span>
+      <div class="edu-deg">Neo4j Graph Data Science</div>
+      <div class="edu-inst">Neo4j</div>
+      <div class="edu-meta"><span>Credential</span></div>
+      <div class="chips"><span class="chip">Graph Algorithms</span><span class="chip">Machine Learning</span><span class="chip">Centrality</span><span class="chip">Similarity</span></div>
+    </a>
+    <a href="#" target="_blank" style="text-decoration:none; display:block; cursor:pointer;" class="edu-card rv cert-item">
+      <span class="edu-badge eb-cert">DeepLearning.AI</span>
+      <div class="edu-deg">Deep Learning Specialization</div>
+      <div class="edu-inst">Coursera</div>
+      <div class="edu-meta"><span>Credential</span></div>
+      <div class="chips"><span class="chip">Neural Networks</span><span class="chip">CNN</span><span class="chip">RNN</span><span class="chip">LSTM</span></div>
+    </div>
+    
+    <!-- Hidden by default -->
+    <a href="#" target="_blank" style="text-decoration:none; display:block; cursor:pointer;" class="edu-card rv cert-item hidden-cert" style="display:none;">
+      <span class="edu-badge eb-cert">Stanford</span>
+      <div class="edu-deg">Machine Learning Specialization</div>
+      <div class="edu-inst">Coursera</div>
+      <div class="edu-meta"><span>Credential</span></div>
+      <div class="chips"><span class="chip">Supervised Learning</span><span class="chip">Unsupervised Learning</span><span class="chip">Recommenders</span></div>
+    </a>
+    <a href="#" target="_blank" style="text-decoration:none; display:block; cursor:pointer;" class="edu-card rv cert-item hidden-cert" style="display:none;">
+      <span class="edu-badge eb-cert">IBM</span>
+      <div class="edu-deg">IBM Data Science Professional</div>
+      <div class="edu-inst">Coursera</div>
+      <div class="edu-meta"><span>Credential</span></div>
+      <div class="chips"><span class="chip">Python</span><span class="chip">Data Analysis</span><span class="chip">SQL</span><span class="chip">Visualization</span></div>
+    </a>
+    <a href="#" target="_blank" style="text-decoration:none; display:block; cursor:pointer;" class="edu-card rv cert-item hidden-cert" style="display:none;">
+      <span class="edu-badge eb-cert">Kaggle</span>
+      <div class="edu-deg">Advanced Machine Learning</div>
+      <div class="edu-inst">Kaggle</div>
+      <div class="edu-meta"><span>Credential</span></div>
+      <div class="chips"><span class="chip">Feature Engineering</span><span class="chip">XGBoost</span><span class="chip">Ensembling</span></div>
+    </a>
+  </div>
+  
+  <div style="text-align:center; margin-top:30px;">
+    <button id="show-more-certs" class="ct-btn" style="margin:0 auto; padding: 12px 26px; border: 1px solid rgba(56,189,248,0.3); background: rgba(56,189,248,0.06); color: var(--cyan); transition: all 0.3s; cursor: pointer;">Show More Certificates</button>
+  </div>
+</section>
+
 <!-- EDUCATION -->
 <section id="education" style="padding-top:0;">
   <div class="sec-hd">
@@ -1156,64 +1227,6 @@ html[data-theme="light"] .hero-eyebrow{
   </div>
 </section>
 
-
-<!-- CERTIFICATIONS -->
-<section id="certifications" style="padding-top:0;">
-  <div class="sec-hd">
-    <div class="sec-lbl">Licenses & Certifications</div>
-    <h2 class="sec-ttl rv">Professional <span class="shine-word">Certificates</span></h2>
-  </div>
-  <div class="edu-grid" id="cert-grid">
-    <div class="edu-card rv cert-item">
-      <span class="edu-badge eb-cert">Neo4j</span>
-      <div class="edu-deg">Neo4j Certified Professional</div>
-      <div class="edu-inst">Neo4j</div>
-      <div class="edu-meta"><span>Credential</span></div>
-      <div class="chips"><span class="chip">Graph Databases</span><span class="chip">Cypher</span><span class="chip">Data Modeling</span><span class="chip">Architecture</span></div>
-    </div>
-    <div class="edu-card rv cert-item">
-      <span class="edu-badge eb-cert">Neo4j</span>
-      <div class="edu-deg">Neo4j Graph Data Science</div>
-      <div class="edu-inst">Neo4j</div>
-      <div class="edu-meta"><span>Credential</span></div>
-      <div class="chips"><span class="chip">Graph Algorithms</span><span class="chip">Machine Learning</span><span class="chip">Centrality</span><span class="chip">Similarity</span></div>
-    </div>
-    <div class="edu-card rv cert-item">
-      <span class="edu-badge eb-cert">DeepLearning.AI</span>
-      <div class="edu-deg">Deep Learning Specialization</div>
-      <div class="edu-inst">Coursera</div>
-      <div class="edu-meta"><span>Credential</span></div>
-      <div class="chips"><span class="chip">Neural Networks</span><span class="chip">CNN</span><span class="chip">RNN</span><span class="chip">LSTM</span></div>
-    </div>
-    
-    <!-- Hidden by default -->
-    <div class="edu-card rv cert-item hidden-cert" style="display:none;">
-      <span class="edu-badge eb-cert">Stanford</span>
-      <div class="edu-deg">Machine Learning Specialization</div>
-      <div class="edu-inst">Coursera</div>
-      <div class="edu-meta"><span>Credential</span></div>
-      <div class="chips"><span class="chip">Supervised Learning</span><span class="chip">Unsupervised Learning</span><span class="chip">Recommenders</span></div>
-    </div>
-    <div class="edu-card rv cert-item hidden-cert" style="display:none;">
-      <span class="edu-badge eb-cert">IBM</span>
-      <div class="edu-deg">IBM Data Science Professional</div>
-      <div class="edu-inst">Coursera</div>
-      <div class="edu-meta"><span>Credential</span></div>
-      <div class="chips"><span class="chip">Python</span><span class="chip">Data Analysis</span><span class="chip">SQL</span><span class="chip">Visualization</span></div>
-    </div>
-    <div class="edu-card rv cert-item hidden-cert" style="display:none;">
-      <span class="edu-badge eb-cert">Kaggle</span>
-      <div class="edu-deg">Advanced Machine Learning</div>
-      <div class="edu-inst">Kaggle</div>
-      <div class="edu-meta"><span>Credential</span></div>
-      <div class="chips"><span class="chip">Feature Engineering</span><span class="chip">XGBoost</span><span class="chip">Ensembling</span></div>
-    </div>
-  </div>
-  
-  <div style="text-align:center; margin-top:30px;">
-    <button id="show-more-certs" class="ct-btn" style="margin:0 auto; padding: 12px 26px; border: 1px solid rgba(56,189,248,0.3); background: rgba(56,189,248,0.06); color: var(--cyan); transition: all 0.3s; cursor: pointer;">Show More Certificates</button>
-  </div>
-</section>
 
 <!-- CONTACT -->
 <section id="contact" style="padding-top:0;">
