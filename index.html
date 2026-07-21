@@ -107,7 +107,7 @@ nav.hidden{transform:translateY(-100%);}
 .orb2{width:400px;height:400px;background:rgba(56,189,248,.065);bottom:-60px;left:-120px;animation-delay:-6s;}
 .orb3{width:220px;height:220px;background:rgba(165,243,252,.045);top:40%;right:22%;animation-delay:-9s;}
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:110px 64px 80px;position:relative;z-index:2;max-width:1360px;margin:0 auto;}
-.hero-eyebrow{display:flex;align-items:center;gap:10px;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:30px;font-family:'JetBrains Mono', monospace;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:30px;font-family:'JetBrains Mono', monospace;width:fit-content;background:rgba(103,232,249,.06);border:1px solid rgba(103,232,249,.2);border-radius:99px;padding:7px 16px;}
 .pdot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:pdotAnim 2s infinite;flex-shrink:0;box-shadow:0 0 10px rgba(59,130,246,.6);}
 .hero-title{font-family:'Syne', sans-serif;font-weight:800;font-size:clamp(2.25rem,6.6vw,6rem);line-height:1;letter-spacing:-.02em;}
 .hero-title .ln{display:block;overflow:hidden;}
@@ -136,6 +136,12 @@ nav.hidden{transform:translateY(-100%);}
 .btn-p:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,229,255,.3);}
 .btn-g{padding:14px 30px;background:transparent;color:var(--text);font-family:'Sora', sans-serif;font-weight:500;font-size:.84rem;border:1px solid var(--border);border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .2s;}
 .btn-g:hover{transform:translateY(-3px);border-color:rgba(59,130,246,.5);background:rgba(59,130,246,.07);}
+/* Download CV — distinct purple/violet colored button */
+.btn-cv{padding:14px 30px;background:linear-gradient(135deg,#7c3aed,#a855f7,#c084fc);color:#fff;font-family:'Sora',sans-serif;font-weight:700;font-size:.84rem;border:none;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;}
+.btn-cv::before{content:'';position:absolute;top:0;left:-75%;width:50%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);transition:left .55s ease;}
+.btn-cv:hover::before{left:125%;}
+.btn-cv:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(168,85,247,.4);}
+html[data-theme="light"] .btn-cv{color:#fff;}
 .scroll-hint{position:absolute;bottom:36px;left:64px;display:flex;align-items:center;gap:12px;opacity:0;animation:fuAnim .5s ease 1.6s forwards;}
 .sh-line{width:38px;height:1px;background:var(--muted);overflow:hidden;position:relative;}
 .sh-line::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,var(--cyan),transparent);animation:scanAnim 2.4s ease-in-out infinite;}
@@ -293,6 +299,9 @@ a.proj-card-link:focus{outline:2px solid var(--cyan);outline-offset:3px;}
 .proj-lnk:hover{color:#fde68a;}
 .proj-lnk svg{transition:transform .2s;}
 .proj-lnk:hover svg{transform:translate(3px,-3px);}
+/* Light mode: GitHub label must be dark to be readable */
+html[data-theme="light"] .proj-lnk{color:#1e3a5f;}
+html[data-theme="light"] .proj-lnk:hover{color:#1d4ed8;}
 .p-stat{font-size:.63rem;padding:3px 9px;border-radius:99px;font-weight:600;}
 .ps-live{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);color:var(--green);}
 .ps-wip{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);color:var(--amber);}
@@ -909,7 +918,7 @@ html[data-theme="light"] .hero-eyebrow{
     <div class="cta">
       <a href="#projects" class="btn-p">View My Work →</a>
       <a href="#contact" class="btn-g">Get In Touch</a>
-      <a href="Haseeb_Arif_CV.docx" download class="btn-g" onclick="showToast('CV downloading…')">Download CV ↓</a>
+      <a href="Haseeb_Arif_CV.docx" download class="btn-cv" onclick="showToast('CV downloading…')">Download CV ↓</a>
     </div>
     <div class="scroll-hint"><div class="sh-line"></div><span>Scroll to explore</span></div>
   </div>
