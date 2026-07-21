@@ -2572,16 +2572,7 @@ window.showToast=showToast;
     else if(STATE==='net'){
       stateT++;
 
-      /* stay as roaming net ~3s, then rebuild globe (loop) */
-      if(stateT>180){
-        gnodes.forEach((n,i)=>{
-          const ni=i%NET_COUNT;
-          n.reformFromX=netNodes[ni].x;
-          n.reformFromY=netNodes[ni].y;
-        });
-        STATE='reforming'; stateT=0;
-        return;
-      }
+      /* Neural net stays permanently — no loop back to globe */
 
       /* drift nodes */
       netNodes.forEach(n=>{
