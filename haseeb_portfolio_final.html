@@ -2300,6 +2300,11 @@ window.showToast=showToast;
     ════════════════════════════════════════════ */
     if(STATE==='globe'){
       stateT++;
+      /* Auto-explode after ~5 seconds of spinning globe (can also click to trigger early) */
+      if(stateT > 300){
+        triggerExplosion();
+        return;
+      }
       const tiltX=((mouseX-CX)/W)*.8;
       const tiltY=((mouseY-CY)/H)*.5;
       rotY+=.0045+Math.abs(tiltX)*.005;
