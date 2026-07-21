@@ -396,26 +396,94 @@ a.proj-card-link:focus{outline:2px solid var(--cyan);outline-offset:3px;}
   .stats-row{grid-template-columns:repeat(4,1fr);}
   .profile-card{max-width:380px;}
 }
+
+/* ══════════════════════════════════════════
+   MOBILE — 768px
+══════════════════════════════════════════ */
 @media(max-width:768px){
-  nav{padding:15px 20px;}nav.scrolled{padding:10px 20px;}
+  /* Nav */
+  nav{padding:14px 18px;}nav.scrolled{padding:10px 18px;}
   .nav-links,#themeToggle{display:none;}
   .ham{display:flex;}
-  .hero{padding:88px 20px 60px;}
-  .scroll-hint{left:20px;}
-  section{padding:72px 20px;}
-  .site-footer{padding:20px 20px;}
-  .stats-row{grid-template-columns:repeat(2,1fr);}
+
+  /* Hero */
+  .hero{padding:80px 18px 52px;min-height:auto;}
+  .hero-eyebrow{font-size:.62rem;}
+  .hero-title{font-size:clamp(2.2rem,11vw,3.8rem);}
+  .hero-sub{font-size:.92rem;max-width:100%;}
+  .typed-wrap{height:30px;}
+  .typed-txt{font-size:.85rem;}
+  .cta{gap:10px;}
+  .btn-p,.btn-g{padding:12px 20px;font-size:.82rem;width:100%;justify-content:center;}
+  .scroll-hint{display:none;}
+  .badges{gap:6px;}
+  .bdg{font-size:.62rem;padding:4px 10px;}
+
+  /* Sections */
+  section{padding:60px 18px;}
+
+  /* About */
+  .about-grid{gap:32px;}
+  .stats-row{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .stat-c{padding:18px 10px;}
+  .stat-n{font-size:1.7rem;}
+  .profile-card{max-width:100%;}
+  .focus-tags{gap:6px;}
+  .ftag{font-size:.7rem;padding:6px 12px;}
+
+  /* Experience */
+  .exp-card{padding:22px 18px;}
+  .exp-hdr{flex-direction:column;gap:8px;}
+  .exp-dt{align-self:flex-start;}
+
+  /* Projects */
   .proj-grid{grid-template-columns:1fr;}
-  .skills-grid{grid-template-columns:1fr 1fr;}
-  .edu-grid{grid-template-columns:1fr;}
-  .ct-wrap{padding:36px 20px;}
-  .ct-grid{grid-template-columns:1fr 1fr;}
-}
-@media(max-width:480px){
+  .proj-card{padding:22px 18px;}
+
+  /* Skills */
   .skills-grid{grid-template-columns:1fr;}
+  .sk-card{padding:22px 18px;}
+
+  /* Education */
+  .edu-grid{grid-template-columns:1fr;}
+  .edu-card{padding:24px 18px;}
+
+  /* Contact */
+  .ct-wrap{padding:36px 18px;}
   .ct-grid{grid-template-columns:1fr;}
-  .hero-title{font-size:clamp(2.25rem,11.5vw,3.6rem);}
+  .ct-btn{padding:14px 16px;}
+
+  /* Footer */
+  .site-footer{padding:20px 18px;flex-direction:column;text-align:center;gap:10px;}
+  .footer-r{justify-content:center;flex-wrap:wrap;gap:16px;}
+
+  /* Disable heavy neural canvas animation on mobile — saves ~60% CPU */
+  #neural-canvas{display:none !important;}
+
+  /* Reduce orb blur cost on mobile */
+  .orb{filter:blur(30px) !important;}
+
+  /* Hide ambient labels on mobile (overflow issues) */
+  .amb-label{display:none;}
+
+  /* Hide roaming canvas on mobile for perf */
+  .roam-canvas{display:none;}
 }
+
+/* ══════════════════════════════════════════
+   MOBILE — 480px
+══════════════════════════════════════════ */
+@media(max-width:480px){
+  .hero-title{font-size:clamp(2rem,12vw,3.2rem);}
+  .hero-sub{font-size:.88rem;}
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+  .ct-grid{grid-template-columns:1fr;}
+  #btt{bottom:16px;right:16px;width:36px;height:36px;font-size:.85rem;}
+  .proj-name{font-size:1rem;}
+  .sec-ttl{font-size:clamp(1.5rem,6vw,2.2rem);}
+  .exp-bul li{font-size:.82rem;}
+}
+
 
 /* stat-c hover glow via box-shadow only */
 .stat-c:hover{
@@ -649,8 +717,9 @@ html[data-theme="light"] #neural-canvas{
 @media(max-width:900px){
   #neural-canvas{ opacity:.85; }
 }
-@media(max-width:600px){
-  #neural-canvas{ display:block; opacity:.55; }
+/* Hide on mobile — JS animation loop will also be skipped */
+@media(max-width:768px){
+  #neural-canvas{ display:none !important; }
 }
 
 .amb-label{
@@ -1771,6 +1840,8 @@ window.showToast=showToast;
 (function(){
   const cv = document.getElementById('neural-canvas');
   if(!cv) return;
+  /* Skip entire animation on mobile — huge CPU/battery saving */
+  if(window.innerWidth <= 768 || ('ontouchstart' in window && window.innerWidth <= 768)) return;
   const ctx = cv.getContext('2d');
   const dpr = Math.min(window.devicePixelRatio||1,2);
 
