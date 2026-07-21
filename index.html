@@ -2572,8 +2572,8 @@ window.showToast=showToast;
     else if(STATE==='net'){
       stateT++;
 
-      /* stay as roaming net ~3s, then rebuild globe (loop) */
-      if(stateT>180){
+      /* stay as roaming net ~3.5s (+0.5s), then rebuild globe */
+      if(stateT>210){
         gnodes.forEach((n,i)=>{
           const ni=i%NET_COUNT;
           n.reformFromX=netNodes[ni].x;
