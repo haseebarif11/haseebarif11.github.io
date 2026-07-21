@@ -2572,7 +2572,26 @@ window.showToast=showToast;
     else if(STATE==='net'){
       stateT++;
 
-      /* Neural net stays permanently — no loop back to globe */
+      /* ── Phase timing ──────────────────────────────────────────
+         0  – 90  frames : dots only (no lines)
+         90 – 180 frames : lines fade in gradually
+         180– 360 frames : full neural net visible
+         360+            : reform back to globe
+      ─────────────────────────────────────────────────────────── */
+      const LINE_FADE_START = 90;
+      const LINE_FADE_END   = 180;
+      const REFORM_AT       = 360;
+
+      /* Loop back to globe */
+      if(stateT > REFORM_AT){
+        gnodes.forEach((n,i)=>{
+          const ni=i%NET_COUNT;
+          n.reformFromX=netNodes[ni].x;
+          n.reformFromY=netNodes[ni].y;
+        });
+        STATE='reforming'; stateT=0;
+        return;
+      }
 
       /* drift nodes */
       netNodes.forEach(n=>{
@@ -2592,17 +2611,23 @@ window.showToast=showToast;
         if(n.active){n.activeFade=Math.max(0,n.activeFade-.012);if(!n.activeFade)n.active=false;}
       });
 
-      /* draw connections */
-      for(let i=0;i<NET_COUNT;i++){
-        const a=netNodes[i];
-        for(let j=i+1;j<NET_COUNT;j++){
-          const b=netNodes[j];
-          const d=Math.hypot(a.x-b.x,a.y-b.y);
-          if(d>NET_LINK_DIST)continue;
-          const alpha=(1-d/NET_LINK_DIST)*(isDark?.13:.18);
-          ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
-          ctx.strokeStyle=isDark?hexA('#38bdf8',alpha):hexA('#1d4ed8',alpha);
-          ctx.lineWidth=.7;ctx.stroke();
+      /* Line fade-in factor: 0 until LINE_FADE_START, then ramps to 1 */
+      const lineFade = stateT < LINE_FADE_START ? 0
+        : Math.min(1, (stateT - LINE_FADE_START) / (LINE_FADE_END - LINE_FADE_START));
+
+      /* draw connections — only visible after dots phase */
+      if(lineFade > 0){
+        for(let i=0;i<NET_COUNT;i++){
+          const a=netNodes[i];
+          for(let j=i+1;j<NET_COUNT;j++){
+            const b=netNodes[j];
+            const d=Math.hypot(a.x-b.x,a.y-b.y);
+            if(d>NET_LINK_DIST)continue;
+            const alpha=(1-d/NET_LINK_DIST)*(isDark?.13:.18)*lineFade;
+            ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+            ctx.strokeStyle=isDark?hexA('#38bdf8',alpha):hexA('#1d4ed8',alpha);
+            ctx.lineWidth=.7;ctx.stroke();
+          }
         }
       }
 
