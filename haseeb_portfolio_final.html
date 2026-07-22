@@ -601,23 +601,15 @@ html[data-theme="dark"] .edu-card:hover{
 }
 @keyframes border-spin { to { --ba: 360deg; } }
 
-/* Cards: transparent CSS border removed, use conic-gradient border-box */
+/* Cards */
 .sk-card, .proj-card, .edu-card:not(.cert-card), .exp-card, .profile-card {
-  border: 1.5px solid transparent !important;
-  background-image: var(--cardGrad), conic-gradient(
-    from var(--ba),
-    transparent 0% 72%,
-    color-mix(in srgb, var(--pc, var(--cyan)) 70%, transparent) 72% 84%,
-    color-mix(in srgb, var(--pc, var(--cyan)) 100%, white 30%) 84% 88%,
-    white 88% 90%,
-    color-mix(in srgb, var(--pc, var(--cyan)) 100%, white 30%) 90% 94%,
-    transparent 94% 100%
-  );
-  background-origin: padding-box, border-box;
-  background-clip: padding-box, border-box;
-  animation: border-spin var(--bspd, 4s) linear infinite;
-  box-shadow: 0 0 0 0 transparent !important; /* remove fallback */
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  box-shadow: 0 0 0 0 transparent !important; 
 }
+
 /* Stagger speed slightly per card type for variety */
 .sk-card   { --bspd: 3.8s; }
 .proj-card { --bspd: 4.2s; }
@@ -625,7 +617,55 @@ html[data-theme="dark"] .edu-card:hover{
 .exp-card  { --bspd: 3.5s; }
 .profile-card { --bspd: 5s; }
 
-/* Light mode border adjustment */
+/* The spinning comet */
+.roam-css-glow {
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: conic-gradient(
+    from var(--ba),
+    transparent 0%,
+    transparent 60%,
+    color-mix(in srgb, var(--pc, var(--cyan)) 10%, transparent) 70%,
+    color-mix(in srgb, var(--pc, var(--cyan)) 40%, transparent) 85%,
+    color-mix(in srgb, var(--pc, var(--cyan)) 80%, white 20%) 95%,
+    white 98%,
+    transparent 100%
+  );
+  animation: border-spin var(--bspd, 4s) linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+/* Inner blur for soft neon tail */
+.roam-css-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  filter: blur(6px);
+  opacity: 0.8;
+}
+
+/* The dark background to cover the center */
+.roam-css-bg {
+  position: absolute;
+  inset: 1.5px;
+  background: var(--cardGrad);
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Bring card contents forward */
+.sk-card > *:not(.roam-css-glow):not(.roam-css-bg),
+.proj-card > *:not(.roam-css-glow):not(.roam-css-bg),
+.edu-card > *:not(.roam-css-glow):not(.roam-css-bg),
+.exp-card > *:not(.roam-css-glow):not(.roam-css-bg),
+.profile-card > *:not(.roam-css-glow):not(.roam-css-bg) {
+  position: relative; z-index: 1;
+}
+
+/* Light mode adjustment */
 html[data-theme="light"] .sk-card,
 html[data-theme="light"] .proj-card,
 html[data-theme="light"] .edu-card:not(.cert-card),
@@ -633,9 +673,6 @@ html[data-theme="light"] .exp-card,
 html[data-theme="light"] .profile-card {
   --ba: 0deg;
 }
-
-/* Remove old canvas z-index overrides — no longer needed */
-.sk-card   > *, .proj-card > *, .edu-card > *, .exp-card > *, .profile-card > * { position: relative; z-index: 1; }
 
 /* ── STAT CARD BOTTOM-ONLY moving light ───────────────────────── */
 /* Replace shimmer-bar with a continuous looping glow */
@@ -1677,9 +1714,19 @@ function showToast(m){const t=document.getElementById('toast');t.textContent=m;t
 window.showToast=showToast;
 
 /* ─── ROAMING BORDER LIGHT ENGINE ──────────────────────────────── */
-/* Removed — now handled by CSS @property conic-gradient animation  */
-/* (zero JS cost, GPU compositor, silky smooth on all devices)      */
+/* Replaced canvas with GPU-compositor CSS blur DOM injection       */
+/* (zero frame-loop overhead, incredibly smooth, retains neon glow) */
 (function(){
+  /* Inject glowing elements to prevent ::before/::after conflicts */
+  document.querySelectorAll('.sk-card, .proj-card-link .proj-card, .edu-card:not(.cert-card), .exp-card, .profile-card').forEach(el => {
+    const bg = document.createElement('div');
+    bg.className = 'roam-css-bg';
+    const glow = document.createElement('div');
+    glow.className = 'roam-css-glow';
+    el.insertBefore(bg, el.firstChild);
+    el.insertBefore(glow, el.firstChild);
+  });
+
   /* Stat cards still get the bottom-only CSS light bar */
   const STAT_COLORS = [
     ['#3b82f6','#38bdf8'],
