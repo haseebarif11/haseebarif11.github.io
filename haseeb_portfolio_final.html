@@ -592,29 +592,50 @@ html[data-theme="dark"] .edu-card:hover{
 /* ─── ROAMING BORDER LIGHT ──────────────────────────────────────── */
 
 /* Canvas lives INSIDE the card as first child, perfectly flush */
-.roam-canvas{
-  position:absolute;
-  inset:0;
-  width:100% !important;
-  height:100% !important;
-  border-radius:inherit;
-  pointer-events:none;
-  z-index:0;
+/* ── CSS-ONLY roaming border light (replaces canvas system) ──────── */
+/* Uses @property + conic-gradient — 100% GPU compositor, zero JS cost */
+@property --ba {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes border-spin { to { --ba: 360deg; } }
+
+/* Cards: transparent CSS border removed, use conic-gradient border-box */
+.sk-card, .proj-card, .edu-card:not(.cert-card), .exp-card, .profile-card {
+  border: 1.5px solid transparent !important;
+  background-image: var(--cardGrad), conic-gradient(
+    from var(--ba),
+    transparent 0% 72%,
+    color-mix(in srgb, var(--pc, var(--cyan)) 70%, transparent) 72% 84%,
+    color-mix(in srgb, var(--pc, var(--cyan)) 100%, white 30%) 84% 88%,
+    white 88% 90%,
+    color-mix(in srgb, var(--pc, var(--cyan)) 100%, white 30%) 90% 94%,
+    transparent 94% 100%
+  );
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+  animation: border-spin var(--bspd, 4s) linear infinite;
+  box-shadow: 0 0 0 0 transparent !important; /* remove fallback */
+}
+/* Stagger speed slightly per card type for variety */
+.sk-card   { --bspd: 3.8s; }
+.proj-card { --bspd: 4.2s; }
+.edu-card  { --bspd: 4.6s; }
+.exp-card  { --bspd: 3.5s; }
+.profile-card { --bspd: 5s; }
+
+/* Light mode border adjustment */
+html[data-theme="light"] .sk-card,
+html[data-theme="light"] .proj-card,
+html[data-theme="light"] .edu-card:not(.cert-card),
+html[data-theme="light"] .exp-card,
+html[data-theme="light"] .profile-card {
+  --ba: 0deg;
 }
 
-/* All roam-target cards: hide CSS border (canvas draws it), relative pos */
-.sk-card   { border-color:transparent !important; position:relative; overflow:hidden; box-shadow:0 0 0 1px rgba(255,255,255,0.06); }
-.proj-card { border-color:transparent !important; box-shadow:0 0 0 1px rgba(255,255,255,0.06); }
-.edu-card  { border-color:transparent !important; position:relative; overflow:hidden; box-shadow:0 0 0 1px rgba(255,255,255,0.06); }
-.exp-card  { border-color:transparent !important; position:relative; overflow:hidden; box-shadow:0 0 0 1px rgba(255,255,255,0.06); }
-.profile-card { border-color:transparent !important; position:relative; overflow:hidden; box-shadow:0 0 0 1px rgba(255,255,255,0.06); }
-
-/* Push all direct children above the canvas */
-.sk-card  > *:not(.roam-canvas),
-.proj-card> *:not(.roam-canvas),
-.edu-card > *:not(.roam-canvas),
-.exp-card > *:not(.roam-canvas),
-.profile-card > *:not(.roam-canvas){ position:relative; z-index:1; }
+/* Remove old canvas z-index overrides — no longer needed */
+.sk-card   > *, .proj-card > *, .edu-card > *, .exp-card > *, .profile-card > * { position: relative; z-index: 1; }
 
 /* ── STAT CARD BOTTOM-ONLY moving light ───────────────────────── */
 /* Replace shimmer-bar with a continuous looping glow */
@@ -1656,227 +1677,23 @@ function showToast(m){const t=document.getElementById('toast');t.textContent=m;t
 window.showToast=showToast;
 
 /* ─── ROAMING BORDER LIGHT ENGINE ──────────────────────────────── */
+/* Removed — now handled by CSS @property conic-gradient animation  */
+/* (zero JS cost, GPU compositor, silky smooth on all devices)      */
 (function(){
-
-  /* ── Color palettes ─────────────────────────────────────────── */
-  const SK_COLORS = [
-    ['#3b82f6','#38bdf8','#a5f3fc'],  // Automation — blue → cyan → ice
-    ['#a855f7','#c084fc','#e9d5ff'],  // AI/ML — purple → violet → lavender
-    ['#f59e0b','#fcd34d','#fef3c7'],  // APIs — amber → gold → cream
-    ['#10b981','#34d399','#6ee7b7'],  // Languages — emerald → green → mint
-  ];
-  const PROJ_COLORS = [
-    ['#3b82f6','#38bdf8','#a5f3fc'],
-    ['#f59e0b','#fbbf24','#fde68a'],
-    ['#a855f7','#c084fc','#e9d5ff'],
-    ['#10b981','#34d399','#6ee7b7'],
-    ['#ec4899','#f472b6','#fbcfe8'],
-    ['#0ea5e9','#38bdf8','#bae6fd'],
-  ];
-  const EDU_COLORS = [
-    ['#0ea5e9','#38bdf8','#bae6fd'],  // University — sky
-    ['#3b82f6','#60a5fa','#bfdbfe'],  // Certificate — blue
-    ['#10b981','#34d399','#6ee7b7'],  // School — green
-  ];
-  const EXP_COLORS = [
-    ['#3b82f6','#38bdf8','#a5f3fc'],
-  ];
-
-  /* ── Draw full perimeter comet ──────────────────────────────── */
-  function drawBorder(canvas, colors, progress){
-    const dpr = window.devicePixelRatio || 1;
-    const W = canvas.width, H = canvas.height;
-    const w = W/dpr, h = H/dpr;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0,0,W,H);
-
-    const isDark = document.documentElement.dataset.theme !== 'light';
-    const [c1,c2,c3] = colors;
-    const r = 18;
-    const perim = 2*(w+h) - 8*r + 2*Math.PI*r;
-    const cometLen = 0.30;
-
-    /* NO base border — just the comet. The static dim outline caused ghost box lines. */
-
-    /* 2 — comet trail (tail→head) */
-    const SEG = 45; /* reduced from 90 — halves canvas draw calls */
-    for(let i=0; i<=SEG; i++){
-      const t   = i/SEG;
-      const pos = ((progress - cometLen*(1-t))%1+1)%1;
-      const pos2= ((progress - cometLen*(1-(t+1/SEG)))%1+1)%1;
-      const pt  = pp(pos, w, h, r, perim);
-      const pt2 = pp(pos2,w, h, r, perim);
-      const fade = t*t*t;
-      if(fade < 0.01) continue;
-
-      const col = t > 0.88
-        ? lerp3(c2, '#ffffff', (t-0.88)/0.12)
-        : t > 0.5
-          ? lerp3(c1, c2, (t-0.5)/0.5)
-          : lerp3(c3, c1, t/0.5);
-
-      ctx.save();
-      ctx.strokeStyle = rgba(col, fade * (isDark ? 0.95 : 1.0));
-      ctx.lineWidth   = dpr * (0.8 + t*3.2);
-      ctx.lineCap     = 'round';
-      ctx.beginPath();
-      ctx.moveTo(pt.x*dpr,  pt.y*dpr);
-      ctx.lineTo(pt2.x*dpr, pt2.y*dpr);
-      ctx.stroke();
-      ctx.restore();
-    }
-
-    /* 3 — head glow halo */
-    const head = pp(progress, w, h, r, perim);
-    const g = ctx.createRadialGradient(head.x*dpr,head.y*dpr,0, head.x*dpr,head.y*dpr,dpr*20);
-    g.addColorStop(0,   rgba(c3, isDark?0.95:1.0));
-    g.addColorStop(0.3, rgba(c2, isDark?0.40:0.55));
-    g.addColorStop(0.7, rgba(c1, isDark?0.15:0.20));
-    g.addColorStop(1,   rgba(c1, 0));
-    ctx.save();
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.arc(head.x*dpr, head.y*dpr, dpr*20, 0, Math.PI*2);
-    ctx.fill();
-    ctx.restore();
-  }
-
-  /* ── Geometry ───────────────────────────────────────────────── */
-  function rrPath(ctx,x,y,w,h,r){
-    ctx.beginPath();
-    ctx.moveTo(x+r,y);
-    ctx.lineTo(x+w-r,y);
-    ctx.arcTo(x+w,y,  x+w,y+r,  r);
-    ctx.lineTo(x+w,y+h-r);
-    ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
-    ctx.lineTo(x+r,y+h);
-    ctx.arcTo(x,y+h,  x,y+h-r,  r);
-    ctx.lineTo(x,y+r);
-    ctx.arcTo(x,y,    x+r,y,    r);
-    ctx.closePath();
-  }
-
-  function pp(t, w, h, r, perim){
-    const d = ((t%1)+1)%1 * perim;
-    const segs = [
-      {l:w-2*r, fn:s=>({x:r+s,                        y:0})},
-      {l:Math.PI/2*r, fn:s=>({x:w-r+Math.sin(s/r)*r,  y:r-Math.cos(s/r)*r})},
-      {l:h-2*r, fn:s=>({x:w,                           y:r+s})},
-      {l:Math.PI/2*r, fn:s=>({x:w-r+Math.cos(s/r)*r,  y:h-r+Math.sin(s/r)*r})},
-      {l:w-2*r, fn:s=>({x:w-r-s,                       y:h})},
-      {l:Math.PI/2*r, fn:s=>({x:r-Math.sin(s/r)*r,    y:h-r+Math.cos(s/r)*r})},
-      {l:h-2*r, fn:s=>({x:0,                           y:h-r-s})},
-      {l:Math.PI/2*r, fn:s=>({x:r-Math.cos(s/r)*r,    y:r-Math.sin(s/r)*r})},
-    ];
-    let rem=d;
-    for(const s of segs){ if(rem<=s.l) return s.fn(rem); rem-=s.l; }
-    return {x:r,y:0};
-  }
-
-  /* ── Color helpers ──────────────────────────────────────────── */
-  function lerp3(a,b,t){
-    const A=toRgb(a),B=toRgb(b);
-    return `rgb(${~~(A[0]+(B[0]-A[0])*t)},${~~(A[1]+(B[1]-A[1])*t)},${~~(A[2]+(B[2]-A[2])*t)})`;
-  }
-  function toRgb(h){
-    if(h.startsWith('rgb')){const m=h.match(/\d+/g);return[+m[0],+m[1],+m[2]];}
-    const n=parseInt(h.replace('#',''),16);
-    return[(n>>16)&255,(n>>8)&255,n&255];
-  }
-  function rgba(col,a){
-    const [r,g,b]=toRgb(col);
-    return `rgba(${r},${g},${b},${a.toFixed(3)})`;
-  }
-
-  /* ── Setup full-border canvas ───────────────────────────────── */
-  const entries=[];
-
-  function setupBorderCard(el, colors, speed){
-    const canvas=document.createElement('canvas');
-    canvas.className='roam-canvas';
-    el.style.position='relative';
-    el.insertBefore(canvas, el.firstChild);
-    const entry={canvas, el, colors, speed, progress:Math.random()};
-    entries.push(entry);
-
-    function resize(){
-      const dpr=window.devicePixelRatio||1;
-      const rect=el.getBoundingClientRect();
-      if(!rect.width) return;
-      canvas.width =rect.width *dpr;
-      canvas.height=rect.height*dpr;
-      canvas.style.width =rect.width +'px';
-      canvas.style.height=rect.height+'px';
-    }
-    resize();
-    new ResizeObserver(resize).observe(el);
-  }
-
-  /* ── Skill cards (Automation / AI-ML / APIs / Languages) ───── */
-  document.querySelectorAll('.sk-card').forEach((el,i)=>{
-    setupBorderCard(el, SK_COLORS[i%SK_COLORS.length], 0);
-  });
-
-  /* ── Project cards ──────────────────────────────────────────── */
-  document.querySelectorAll('.proj-card-link').forEach((el,i)=>{
-    setupBorderCard(el.querySelector('.proj-card'), PROJ_COLORS[i%PROJ_COLORS.length], 0);
-  });
-
-  /* ── Education cards only (not cert cards) ─────────────────── */
-  document.querySelectorAll('.edu-card:not(.cert-card)').forEach((el,i)=>{
-    setupBorderCard(el, EDU_COLORS[i%EDU_COLORS.length], 0);
-  });
-
-  /* ── Experience card ────────────────────────────────────────── */
-  document.querySelectorAll('.exp-card').forEach((el,i)=>{
-    setupBorderCard(el, EXP_COLORS[i%EXP_COLORS.length], 0);
-  });
-
-  /* ── Profile card (name/city/uni box) ───────────────────────── */
-  const profileCard = document.querySelector('.profile-card');
-  if(profileCard){
-    setupBorderCard(profileCard, ['#3b82f6','#38bdf8','#a5f3fc'], 0);
-  }
-
-  /* ── Stat cards — bottom-only moving light ──────────────────── */
+  /* Stat cards still get the bottom-only CSS light bar */
   const STAT_COLORS = [
-    ['#3b82f6','#38bdf8'],   // CGPA
-    ['#a855f7','#c084fc'],   // Internship
-    ['#10b981','#34d399'],   // Projects
-    ['#f59e0b','#fbbf24'],   // Graduating
+    ['#3b82f6','#38bdf8'],
+    ['#a855f7','#c084fc'],
+    ['#10b981','#34d399'],
+    ['#f59e0b','#fbbf24'],
   ];
   document.querySelectorAll('.stat-c').forEach((el,i)=>{
     const bar = document.createElement('div');
     bar.className = 'stat-bottom-light';
     const [c1,c2] = STAT_COLORS[i%STAT_COLORS.length];
     bar.style.background = `linear-gradient(90deg, transparent, ${c1}, ${c2}, ${c1}, transparent)`;
-    bar.style.animationDelay = `0s`;
     el.appendChild(bar);
   });
-
-  /* ── Animation loop — ONE shared progress for all cards ─────── */
-  const BORDER_SPEED = 0.00055; /* 3x faster lights */
-  let sharedProgress = 0;
-  let last=0, borderActive=true;
-  /* Pause when tab hidden */
-  document.addEventListener('visibilitychange',()=>{borderActive=!document.hidden;});
-  /* Throttle to ~40fps (every 25ms) — good balance of smooth & light */
-  const BORDER_INTERVAL = 25;
-  function loop(ts){
-    requestAnimationFrame(loop);
-    if(!borderActive) return;
-    const dt=Math.min(ts-last, 50);
-    if(dt < BORDER_INTERVAL) return;
-    last=ts;
-    sharedProgress=(sharedProgress+BORDER_SPEED*dt)%1;
-    for(const e of entries){
-      const rect=e.el.getBoundingClientRect();
-      if(!rect.width||rect.bottom<-300||rect.top>innerHeight+300) continue;
-      drawBorder(e.canvas, e.colors, sharedProgress);
-    }
-  }
-  requestAnimationFrame(ts=>{last=ts;requestAnimationFrame(loop);});
-
 })();
 
 /* STAT COUNTER ANIMATION */
