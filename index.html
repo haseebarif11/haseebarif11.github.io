@@ -481,8 +481,8 @@ html[data-theme="light"] .ct-github:hover{background:rgba(15,23,42,.09);box-shad
   .site-footer{padding:20px 20px;flex-direction:column;text-align:center;gap:10px;}
   .footer-r{justify-content:center;flex-wrap:wrap;gap:16px;}
 
-  /* Neural canvas — show on mobile at reduced opacity */
-  #neural-canvas{display:block !important;opacity:.45 !important;}
+  /* Hide neural canvas on mobile — mix-blend-mode:screen causes light-theme glitch */
+  #neural-canvas{display:none !important;}
 
   /* Reduce orb blur cost on mobile */
   .orb{filter:blur(30px) !important;}
@@ -749,9 +749,9 @@ html[data-theme="light"] #neural-canvas{
 @media(max-width:900px){
   #neural-canvas{ opacity:.75; }
 }
-/* Show canvas on mobile but at reduced quality */
+/* Hide on mobile — mix-blend-mode:screen causes light-theme glitch on hero */
 @media(max-width:768px){
-  #neural-canvas{ opacity:.5 !important; display:block !important; }
+  #neural-canvas{ display:none !important; }
 }
 
 .amb-label{
@@ -1877,9 +1877,11 @@ window.showToast=showToast;
 (function(){
   const cv = document.getElementById('neural-canvas');
   if(!cv) return;
-  const isMobile = window.innerWidth <= 768;
+  /* Skip on mobile — mix-blend-mode:screen causes light-theme glitch on hero */
+  if(window.innerWidth <= 768) return;
   const ctx = cv.getContext('2d');
-  const dpr = Math.min(window.devicePixelRatio||1, isMobile ? 1 : 2);
+  const dpr = Math.min(window.devicePixelRatio||1,2);
+  const isMobile = false;
 
   let W,H,CX,CY,GLOB_R;
   function resize(){
