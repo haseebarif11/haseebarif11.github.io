@@ -481,15 +481,15 @@ html[data-theme="light"] .ct-github:hover{background:rgba(15,23,42,.09);box-shad
   .site-footer{padding:20px 20px;flex-direction:column;text-align:center;gap:10px;}
   .footer-r{justify-content:center;flex-wrap:wrap;gap:16px;}
 
-  /* Show neural canvas on mobile, but use normal blend mode to prevent iOS Safari light-background glitch */
+  /* Show neural canvas on mobile at full opacity, use plus-lighter for additive glow without iOS Safari white-bg bug */
   #neural-canvas{
     display:block !important;
-    opacity:0.5 !important;
-    mix-blend-mode:normal !important;
+    opacity:1 !important;
+    mix-blend-mode:plus-lighter !important;
   }
 
-  /* Reduce orb blur cost on mobile */
-  .orb{filter:blur(30px) !important;}
+  /* Hide massive glowing orbs on mobile — they overlap and make the hero look completely light/washed out */
+  .orb{display:none !important;}
 
   /* Hide ambient labels on mobile (overflow issues) */
   .amb-label{display:none;}
@@ -753,9 +753,9 @@ html[data-theme="light"] #neural-canvas{
 @media(max-width:900px){
   #neural-canvas{ opacity:.75; }
 }
-/* On mobile, we handle it inside max-width:768px with mix-blend-mode:normal */
+/* On mobile, use plus-lighter for proper glowing dots without the white-bg bug */
 @media(max-width:768px){
-  #neural-canvas{ display:block !important; mix-blend-mode:normal !important; opacity:0.5 !important; }
+  #neural-canvas{ display:block !important; mix-blend-mode:plus-lighter !important; opacity:1 !important; }
 }
 
 .amb-label{
@@ -1878,8 +1878,8 @@ window.showToast=showToast;
     W=window.innerWidth; H=window.innerHeight;
     cv.width=W*dpr; cv.height=H*dpr;
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    CX=W*0.5; CY=H*0.45;
-    GLOB_R=Math.min(W,H)*(isMobile ? 0.28 : 0.30);
+    CX=W*0.5; CY=H*(isMobile ? 0.40 : 0.45);
+    GLOB_R=Math.min(W,H)*(isMobile ? 0.32 : 0.30);
   }
   resize();
   window.addEventListener('resize',()=>{ resize(); if(STATE==='net') buildNet(); });
@@ -1970,7 +1970,7 @@ window.showToast=showToast;
   /* ══════════════════════════════════════════════════
      GLOBE DATA
   ══════════════════════════════════════════════════ */
-  const GNODES = isMobile ? 70 : 120;
+  const GNODES = isMobile ? 90 : 120;
   let gnodes=[];
   function buildGlobe(){
     gnodes=[];
@@ -2007,7 +2007,7 @@ window.showToast=showToast;
   /* ══════════════════════════════════════════════════
      NET DATA  (scattered nodes all over screen)
   ══════════════════════════════════════════════════ */
-  const NET_COUNT = isMobile ? 50 : 90;
+  const NET_COUNT = isMobile ? 70 : 90;
   let netNodes=[];
   let netPackets=[];
 
