@@ -755,21 +755,8 @@ html[data-theme="light"] #neural-canvas{
 }
 
 .amb-label{
-  position:absolute;
-  top:-0.15em;left:-0.02em;
-  font-family:'Syne',sans-serif;
-  font-size:clamp(4rem,10vw,9rem);
-  font-weight:900;
-  letter-spacing:-.04em;
-  line-height:1;
-  color:transparent;
-  -webkit-text-stroke:1px rgba(59,130,246,.07);
-  pointer-events:none;
-  user-select:none;
-  white-space:nowrap;
-  z-index:0;
+  display:none; /* User requested removal */
 }
-html[data-theme="light"] .amb-label{-webkit-text-stroke:1px rgba(59,130,246,.1);}
 
 /* sections that have ambient label need relative pos */
 section{position:relative;}
