@@ -609,10 +609,10 @@ html[data-theme="dark"] .edu-card:hover{
   box-shadow: 0 0 0 0 transparent !important; 
 }
 
-/* Stagger speed slightly per card type for variety */
-.sk-card   { --bspd: 3.8s; }
+/* Sync speeds so they all move smoothly like the academic background */
+.sk-card   { --bspd: 4.6s; }
 .edu-card  { --bspd: 4.6s; }
-.exp-card  { --bspd: 3.5s; }
+.exp-card  { --bspd: 4.6s; }
 .profile-card { --bspd: 5s; }
 
 /* The sleek, glowing comet tail */
@@ -1861,11 +1861,11 @@ window.showToast=showToast;
     setupBorderCard(el.querySelector('.proj-card'), PROJ_COLORS[i%PROJ_COLORS.length], 0);
   });
 
-  const BORDER_SPEED = 0.00045;
+  const BORDER_SPEED = 0.00028; /* Slower, more elegant speed */
   let sharedProgress = 0;
   let last=0, borderActive=true;
   document.addEventListener('visibilitychange',()=>{borderActive=!document.hidden;});
-  const BORDER_INTERVAL = 33; /* Limit frame rate to maintain performance */
+  const BORDER_INTERVAL = 16; /* Allow 60fps for maximum smoothness */
   function loop(ts){
     requestAnimationFrame(loop);
     if(!borderActive) return;
