@@ -592,8 +592,7 @@ html[data-theme="dark"] .edu-card:hover{
 /* ─── ROAMING BORDER LIGHT ──────────────────────────────────────── */
 
 /* Canvas lives INSIDE the card as first child, perfectly flush */
-/* ── CSS-ONLY roaming border light (replaces canvas system) ──────── */
-/* Uses @property + conic-gradient — 100% GPU compositor, zero JS cost */
+/* ── CSS-ONLY elegant slow border light (for non-project cards) ──────── */
 @property --ba {
   syntax: '<angle>';
   initial-value: 0deg;
@@ -601,8 +600,8 @@ html[data-theme="dark"] .edu-card:hover{
 }
 @keyframes border-spin { to { --ba: 360deg; } }
 
-/* Cards */
-.sk-card, .proj-card, .edu-card:not(.cert-card), .exp-card, .profile-card {
+/* Cards using CSS glow */
+.sk-card, .edu-card:not(.cert-card), .exp-card, .profile-card {
   position: relative;
   overflow: hidden;
   border: 1px solid transparent !important;
@@ -611,13 +610,12 @@ html[data-theme="dark"] .edu-card:hover{
 }
 
 /* Stagger speed slightly per card type for variety */
-.sk-card   { --bspd: 3.8s; }
-.proj-card { --bspd: 4.2s; }
-.edu-card  { --bspd: 4.6s; }
-.exp-card  { --bspd: 3.5s; }
-.profile-card { --bspd: 5s; }
+.sk-card   { --bspd: 8s; }
+.edu-card  { --bspd: 10s; }
+.exp-card  { --bspd: 7.5s; }
+.profile-card { --bspd: 12s; }
 
-/* The spinning comet */
+/* The sleek, professional slow-spinning gradient */
 .roam-css-glow {
   position: absolute;
   top: -50%; left: -50%;
@@ -625,31 +623,29 @@ html[data-theme="dark"] .edu-card:hover{
   background: conic-gradient(
     from var(--ba),
     transparent 0%,
-    transparent 60%,
-    color-mix(in srgb, var(--pc, var(--cyan)) 10%, transparent) 70%,
-    color-mix(in srgb, var(--pc, var(--cyan)) 40%, transparent) 85%,
-    color-mix(in srgb, var(--pc, var(--cyan)) 80%, white 20%) 95%,
-    white 98%,
+    transparent 70%,
+    color-mix(in srgb, var(--pc, var(--cyan)) 30%, transparent) 85%,
+    color-mix(in srgb, var(--pc, var(--cyan)) 70%, transparent) 95%,
     transparent 100%
   );
-  animation: border-spin var(--bspd, 4s) linear infinite;
+  animation: border-spin var(--bspd, 8s) linear infinite;
   z-index: 0;
   pointer-events: none;
 }
-/* Inner blur for soft neon tail */
+/* Inner blur for soft edge */
 .roam-css-glow::after {
   content: '';
   position: absolute;
   inset: 0;
   background: inherit;
-  filter: blur(6px);
-  opacity: 0.8;
+  filter: blur(8px);
+  opacity: 0.6;
 }
 
 /* The dark background to cover the center */
 .roam-css-bg {
   position: absolute;
-  inset: 1.5px;
+  inset: 1px;
   background: var(--cardGrad);
   border-radius: inherit;
   z-index: 0;
@@ -658,7 +654,6 @@ html[data-theme="dark"] .edu-card:hover{
 
 /* Bring card contents forward */
 .sk-card > *:not(.roam-css-glow):not(.roam-css-bg),
-.proj-card > *:not(.roam-css-glow):not(.roam-css-bg),
 .edu-card > *:not(.roam-css-glow):not(.roam-css-bg),
 .exp-card > *:not(.roam-css-glow):not(.roam-css-bg),
 .profile-card > *:not(.roam-css-glow):not(.roam-css-bg) {
@@ -667,11 +662,28 @@ html[data-theme="dark"] .edu-card:hover{
 
 /* Light mode adjustment */
 html[data-theme="light"] .sk-card,
-html[data-theme="light"] .proj-card,
 html[data-theme="light"] .edu-card:not(.cert-card),
 html[data-theme="light"] .exp-card,
 html[data-theme="light"] .profile-card {
   --ba: 0deg;
+}
+
+/* ── ROAMING CANVAS (for projects only) ───────────────────────── */
+.roam-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+}
+.proj-card {
+  border-color: transparent !important;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06);
+}
+.proj-card > *:not(.roam-canvas) {
+  position: relative; z-index: 1;
 }
 
 /* ── STAT CARD BOTTOM-ONLY moving light ───────────────────────── */
@@ -1714,11 +1726,9 @@ function showToast(m){const t=document.getElementById('toast');t.textContent=m;t
 window.showToast=showToast;
 
 /* ─── ROAMING BORDER LIGHT ENGINE ──────────────────────────────── */
-/* Replaced canvas with GPU-compositor CSS blur DOM injection       */
-/* (zero frame-loop overhead, incredibly smooth, retains neon glow) */
 (function(){
-  /* Inject glowing elements to prevent ::before/::after conflicts */
-  document.querySelectorAll('.sk-card, .proj-card-link .proj-card, .edu-card:not(.cert-card), .exp-card, .profile-card').forEach(el => {
+  /* 1. CSS DOM injection for non-project cards */
+  document.querySelectorAll('.sk-card, .edu-card:not(.cert-card), .exp-card, .profile-card').forEach(el => {
     const bg = document.createElement('div');
     bg.className = 'roam-css-bg';
     const glow = document.createElement('div');
@@ -1726,6 +1736,148 @@ window.showToast=showToast;
     el.insertBefore(bg, el.firstChild);
     el.insertBefore(glow, el.firstChild);
   });
+
+  /* 2. Canvas Engine specifically for Project cards */
+  const PROJ_COLORS = [
+    ['#3b82f6','#38bdf8','#a5f3fc'],
+    ['#f59e0b','#fbbf24','#fde68a'],
+    ['#a855f7','#c084fc','#e9d5ff'],
+    ['#10b981','#34d399','#6ee7b7'],
+    ['#ec4899','#f472b6','#fbcfe8'],
+    ['#0ea5e9','#38bdf8','#bae6fd'],
+  ];
+
+  function drawBorder(canvas, colors, progress){
+    const dpr = window.devicePixelRatio || 1;
+    const W = canvas.width, H = canvas.height;
+    const w = W/dpr, h = H/dpr;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,W,H);
+
+    const isDark = document.documentElement.dataset.theme !== 'light';
+    const [c1,c2,c3] = colors;
+    const r = 18;
+    const perim = 2*(w+h) - 8*r + 2*Math.PI*r;
+    const cometLen = 0.30;
+
+    const SEG = 45;
+    for(let i=0; i<=SEG; i++){
+      const t   = i/SEG;
+      const pos = ((progress - cometLen*(1-t))%1+1)%1;
+      const pos2= ((progress - cometLen*(1-(t+1/SEG)))%1+1)%1;
+      const pt  = pp(pos, w, h, r, perim);
+      const pt2 = pp(pos2,w, h, r, perim);
+      const fade = t*t*t;
+      if(fade < 0.01) continue;
+
+      const col = t > 0.88
+        ? lerp3(c2, '#ffffff', (t-0.88)/0.12)
+        : t > 0.5
+          ? lerp3(c1, c2, (t-0.5)/0.5)
+          : lerp3(c3, c1, t/0.5);
+
+      ctx.save();
+      ctx.strokeStyle = rgba(col, fade * (isDark ? 0.95 : 1.0));
+      ctx.lineWidth   = dpr * (0.8 + t*3.2);
+      ctx.lineCap     = 'round';
+      ctx.beginPath();
+      ctx.moveTo(pt.x*dpr,  pt.y*dpr);
+      ctx.lineTo(pt2.x*dpr, pt2.y*dpr);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    const head = pp(progress, w, h, r, perim);
+    const g = ctx.createRadialGradient(head.x*dpr,head.y*dpr,0, head.x*dpr,head.y*dpr,dpr*20);
+    g.addColorStop(0,   rgba(c3, isDark?0.95:1.0));
+    g.addColorStop(0.3, rgba(c2, isDark?0.40:0.55));
+    g.addColorStop(0.7, rgba(c1, isDark?0.15:0.20));
+    g.addColorStop(1,   rgba(c1, 0));
+    ctx.save();
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(head.x*dpr, head.y*dpr, dpr*20, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function pp(t, w, h, r, perim){
+    const d = ((t%1)+1)%1 * perim;
+    const segs = [
+      {l:w-2*r, fn:s=>({x:r+s,                        y:0})},
+      {l:Math.PI/2*r, fn:s=>({x:w-r+Math.sin(s/r)*r,  y:r-Math.cos(s/r)*r})},
+      {l:h-2*r, fn:s=>({x:w,                           y:r+s})},
+      {l:Math.PI/2*r, fn:s=>({x:w-r+Math.cos(s/r)*r,  y:h-r+Math.sin(s/r)*r})},
+      {l:w-2*r, fn:s=>({x:w-r-s,                       y:h})},
+      {l:Math.PI/2*r, fn:s=>({x:r-Math.sin(s/r)*r,    y:h-r+Math.cos(s/r)*r})},
+      {l:h-2*r, fn:s=>({x:0,                           y:h-r-s})},
+      {l:Math.PI/2*r, fn:s=>({x:r-Math.cos(s/r)*r,    y:r-Math.sin(s/r)*r})},
+    ];
+    let rem=d;
+    for(const s of segs){ if(rem<=s.l) return s.fn(rem); rem-=s.l; }
+    return {x:r,y:0};
+  }
+
+  function lerp3(a,b,t){
+    const A=toRgb(a),B=toRgb(b);
+    return `rgb(${~~(A[0]+(B[0]-A[0])*t)},${~~(A[1]+(B[1]-A[1])*t)},${~~(A[2]+(B[2]-A[2])*t)})`;
+  }
+  function toRgb(h){
+    if(h.startsWith('rgb')){const m=h.match(/\d+/g);return[+m[0],+m[1],+m[2]];}
+    const n=parseInt(h.replace('#',''),16);
+    return[(n>>16)&255,(n>>8)&255,n&255];
+  }
+  function rgba(col,a){
+    const [r,g,b]=toRgb(col);
+    return `rgba(${r},${g},${b},${a.toFixed(3)})`;
+  }
+
+  const entries=[];
+
+  function setupBorderCard(el, colors, speed){
+    const canvas=document.createElement('canvas');
+    canvas.className='roam-canvas';
+    el.style.position='relative';
+    el.insertBefore(canvas, el.firstChild);
+    const entry={canvas, el, colors, speed, progress:Math.random()};
+    entries.push(entry);
+
+    function resize(){
+      const dpr=window.devicePixelRatio||1;
+      const rect=el.getBoundingClientRect();
+      if(!rect.width) return;
+      canvas.width =rect.width *dpr;
+      canvas.height=rect.height*dpr;
+      canvas.style.width =rect.width +'px';
+      canvas.style.height=rect.height+'px';
+    }
+    resize();
+    new ResizeObserver(resize).observe(el);
+  }
+
+  document.querySelectorAll('.proj-card-link').forEach((el,i)=>{
+    setupBorderCard(el.querySelector('.proj-card'), PROJ_COLORS[i%PROJ_COLORS.length], 0);
+  });
+
+  const BORDER_SPEED = 0.00045;
+  let sharedProgress = 0;
+  let last=0, borderActive=true;
+  document.addEventListener('visibilitychange',()=>{borderActive=!document.hidden;});
+  const BORDER_INTERVAL = 33; /* Limit frame rate to maintain performance */
+  function loop(ts){
+    requestAnimationFrame(loop);
+    if(!borderActive) return;
+    const dt=Math.min(ts-last, 50);
+    if(dt < BORDER_INTERVAL) return;
+    last=ts;
+    sharedProgress=(sharedProgress+BORDER_SPEED*dt)%1;
+    for(const e of entries){
+      const rect=e.el.getBoundingClientRect();
+      if(!rect.width||rect.bottom<-300||rect.top>innerHeight+300) continue;
+      drawBorder(e.canvas, e.colors, sharedProgress);
+    }
+  }
+  requestAnimationFrame(ts=>{last=ts;requestAnimationFrame(loop);});
 
   /* Stat cards still get the bottom-only CSS light bar */
   const STAT_COLORS = [
