@@ -33,15 +33,16 @@ html[data-theme="light"]{
 html{scroll-behavior:smooth;overflow-x:hidden;}
 body{background:var(--bg);color:var(--text);font-family:'Sora', sans-serif;font-weight:300;line-height:1.65;overflow-x:hidden;cursor:none;}
 /* GPU promotion for heavy animated elements */
-#neural-canvas{will-change:contents;transform:translateZ(0);backface-visibility:hidden;}
+#neural-canvas{will-change:transform;transform:translateZ(0);backface-visibility:hidden;}
 .orb{will-change:transform;}
 .mq-track{will-change:transform;}
 .sk-fill{will-change:transform;}
 .rv,.rv-l,.rv-r{will-change:opacity,transform;}
 nav{will-change:transform;}
-#pbar{will-change:width;}
-/* content-visibility for off-screen sections */
-section{content-visibility:auto;contain-intrinsic-size:auto 600px;}
+#pbar{will-change:transform,width;}
+.roam-canvas{will-change:contents;transform:translateZ(0);pointer-events:none;}
+/* content-visibility only for far-off sections to avoid layout issues */
+#skills,#contact{content-visibility:auto;contain-intrinsic-size:auto 600px;}
 a:focus-visible,button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:4px;}
 ::-webkit-scrollbar{width:2px;}
 ::-webkit-scrollbar-thumb{background:linear-gradient(#3b82f6,#38bdf8,#a5f3fc);}
@@ -1070,6 +1071,7 @@ html[data-theme="light"] .hero-eyebrow{
   </div>
   <div class="proj-grid">
 
+    <!-- 01 Featured -->
     <a class="proj-card-link rv" href="https://github.com/haseebarif11/jira-slack-n8n-workflows" target="_blank" rel="noopener">
       <div class="proj-card" style="--pc:var(--cyan);">
         <div class="proj-top"><span class="proj-num">01 — Featured</span><div class="proj-ico" style="background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.3);color:#3b82f6;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div></div>
@@ -1083,12 +1085,13 @@ html[data-theme="light"] .hero-eyebrow{
       </div>
     </a>
 
-    <a class="proj-card-link rv" href="https://github.com/haseebarif11/fake-news-detection-pipeline" target="_blank" rel="noopener">
+    <!-- 02 OSPilot Agent (promoted from hidden) -->
+    <a class="proj-card-link rv" href="https://github.com/haseebarif11/ospilot-agent" target="_blank" rel="noopener">
       <div class="proj-card" style="--pc:var(--purple);">
-        <div class="proj-top"><span class="proj-num">02</span><div class="proj-ico" style="background:rgba(168,85,247,.08);border-color:rgba(168,85,247,.2);color:#a855f7;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div></div>
-        <span class="proj-year">2025</span><div class="proj-name">Fake News & Misinformation Detection</div>
-        <p class="proj-desc">End-to-end NLP pipeline across 4 datasets (LIAR, ISOT, COVID-19, Twitter15/16). Fine-tuned BERT (100% on ISOT) & RoBERTa (85.5% on COVID tweets). LIME explainability shows which words drive fake classifications. Streamlit web app included.</p>
-        <div class="proj-pills"><span class="pill">Python</span><span class="pill">PyTorch</span><span class="pill">BERT</span><span class="pill">RoBERTa</span><span class="pill">HuggingFace</span><span class="pill">LIME</span><span class="pill">Streamlit</span></div>
+        <div class="proj-top"><span class="proj-num">02</span><div class="proj-ico" style="background:rgba(168,85,247,.08);border-color:rgba(168,85,247,.2);color:#a855f7;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div></div>
+        <span class="proj-year">2026</span><div class="proj-name">OSPilot Agent</div>
+        <p class="proj-desc">Autonomous AI agent for OS-level task automation — navigates the operating system, executes commands, and completes multi-step tasks using LLM-powered reasoning and tool use.</p>
+        <div class="proj-pills"><span class="pill">Python</span><span class="pill">AI Agents</span><span class="pill">LLM</span><span class="pill">Automation</span></div>
         <div class="proj-ft">
           <span class="proj-lnk">GitHub <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           <span class="p-stat ps-live">Complete</span>
@@ -1096,6 +1099,7 @@ html[data-theme="light"] .hero-eyebrow{
       </div>
     </a>
 
+    <!-- 03 Human Activity Recognition -->
     <a class="proj-card-link rv" href="https://github.com/haseebarif11/Human-Activity-Recognition" target="_blank" rel="noopener">
       <div class="proj-card" style="--pc:var(--pink);">
         <div class="proj-top"><span class="proj-num">03</span><div class="proj-ico" style="background:rgba(244,114,182,.08);border-color:rgba(244,114,182,.2);color:#f472b6;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h3l2-6 4 12 3-8 2 4h6"/></svg></div></div>
@@ -1109,12 +1113,13 @@ html[data-theme="light"] .hero-eyebrow{
       </div>
     </a>
 
-    <a class="proj-card-link rv" href="https://github.com/haseebarif11/family-tree-chatbot" target="_blank" rel="noopener">
+    <!-- 04 Family Chatbot Neo4j (promoted from hidden) -->
+    <a class="proj-card-link rv" href="https://github.com/haseebarif11/family-chatbot-neo4j" target="_blank" rel="noopener">
       <div class="proj-card" style="--pc:var(--cyan);">
         <div class="proj-top"><span class="proj-num">04</span><div class="proj-ico" style="background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.3);color:#38bdf8;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M12 6v4M8 14v-4H6a2 2 0 00-2 2v2M16 14v-4h2a2 2 0 012 2v2"/><circle cx="6" cy="17" r="2"/><circle cx="12" cy="17" r="2"/><circle cx="18" cy="17" r="2"/><path d="M12 10v4"/></svg></div></div>
-        <span class="proj-year">2025</span><div class="proj-name">Family Tree Chatbot</div>
-        <p class="proj-desc">Conversational AI using AIML for NLP pattern matching, Prolog/pytholog for knowledge-base reasoning, and Streamlit as the front-end. Handles complex multi-hop family relationship queries.</p>
-        <div class="proj-pills"><span class="pill">Python</span><span class="pill">AIML</span><span class="pill">Prolog</span><span class="pill">pytholog</span><span class="pill">Streamlit</span></div>
+        <span class="proj-year">2026</span><div class="proj-name">Family Chatbot — Neo4j</div>
+        <p class="proj-desc">Conversational chatbot backed by a Neo4j graph database for intelligent family-relationship queries. Uses Cypher queries and LLM integration to answer complex multi-hop questions about family trees.</p>
+        <div class="proj-pills"><span class="pill">Python</span><span class="pill">Neo4j</span><span class="pill">Cypher</span><span class="pill">LangChain</span><span class="pill">Graph DB</span></div>
         <div class="proj-ft">
           <span class="proj-lnk">GitHub <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           <span class="p-stat ps-live">Complete</span>
@@ -1122,22 +1127,10 @@ html[data-theme="light"] .hero-eyebrow{
       </div>
     </a>
 
-    <a class="proj-card-link rv" href="https://github.com/haseebarif11/Titanic-Survival-Prediction-Analysis" target="_blank" rel="noopener">
-      <div class="proj-card" style="--pc:var(--green);">
-        <div class="proj-top"><span class="proj-num">05</span><div class="proj-ico" style="background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.2);color:#34d399;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-8"/></svg></div></div>
-        <span class="proj-year">2024</span><div class="proj-name">Titanic Survival Prediction</div>
-        <p class="proj-desc">End-to-end ML pipeline with EDA, feature engineering, and model comparison across Random Forest, Decision Tree, and KNN classifiers using Scikit-Learn.</p>
-        <div class="proj-pills"><span class="pill">Python</span><span class="pill">Scikit-Learn</span><span class="pill">Pandas</span><span class="pill">EDA</span></div>
-        <div class="proj-ft">
-          <span class="proj-lnk">GitHub <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <span class="p-stat ps-live">Complete</span>
-        </div>
-      </div>
-    </a>
-
+    <!-- 05 Deepfake Face Detection -->
     <a class="proj-card-link rv" href="https://github.com/haseebarif11/Deep-fake-face-detection" target="_blank" rel="noopener">
       <div class="proj-card" style="--pc:var(--amber);">
-        <div class="proj-top"><span class="proj-num">06</span><div class="proj-ico" style="background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.2);color:#fbbf24;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/><path d="M3 17l4-4"/></svg></div></div>
+        <div class="proj-top"><span class="proj-num">05</span><div class="proj-ico" style="background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.2);color:#fbbf24;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/><path d="M3 17l4-4"/></svg></div></div>
         <span class="proj-year">2026</span><div class="proj-name">Deepfake Face Detection</div>
         <p class="proj-desc">Binary deep learning classifier distinguishing real from AI-generated faces using the 140k Real and Fake Faces dataset. EfficientNetB3 architecture with AdamW, cosine annealing LR, label smoothing, and early stopping — trained on Kaggle GPU.</p>
         <div class="proj-pills"><span class="pill">Python</span><span class="pill">TensorFlow</span><span class="pill">EfficientNetB3</span><span class="pill">Kaggle GPU</span></div>
@@ -1148,13 +1141,13 @@ html[data-theme="light"] .hero-eyebrow{
       </div>
     </a>
 
-    <!-- HIDDEN PROJECTS (Show More) -->
-    <a class="proj-card-link rv hidden-proj" href="https://github.com/haseebarif11/ospilot-agent" target="_blank" rel="noopener" style="display:none;">
-      <div class="proj-card" style="--pc:var(--purple);">
-        <div class="proj-top"><span class="proj-num">07</span><div class="proj-ico" style="background:rgba(168,85,247,.08);border-color:rgba(168,85,247,.2);color:#a855f7;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div></div>
-        <span class="proj-year">2026</span><div class="proj-name">OSPilot Agent</div>
-        <p class="proj-desc">Autonomous AI agent for OS-level task automation — navigates the operating system, executes commands, and completes multi-step tasks using LLM-powered reasoning and tool use.</p>
-        <div class="proj-pills"><span class="pill">Python</span><span class="pill">AI Agents</span><span class="pill">LLM</span><span class="pill">Automation</span></div>
+    <!-- 06 Family Tree Chatbot -->
+    <a class="proj-card-link rv" href="https://github.com/haseebarif11/family-tree-chatbot" target="_blank" rel="noopener">
+      <div class="proj-card" style="--pc:var(--green);">
+        <div class="proj-top"><span class="proj-num">06</span><div class="proj-ico" style="background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.2);color:#34d399;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M12 6v4M8 14v-4H6a2 2 0 00-2 2v2M16 14v-4h2a2 2 0 012 2v2"/><circle cx="6" cy="17" r="2"/><circle cx="12" cy="17" r="2"/><circle cx="18" cy="17" r="2"/><path d="M12 10v4"/></svg></div></div>
+        <span class="proj-year">2025</span><div class="proj-name">Family Tree Chatbot</div>
+        <p class="proj-desc">Conversational AI using AIML for NLP pattern matching, Prolog/pytholog for knowledge-base reasoning, and Streamlit as the front-end. Handles complex multi-hop family relationship queries.</p>
+        <div class="proj-pills"><span class="pill">Python</span><span class="pill">AIML</span><span class="pill">Prolog</span><span class="pill">pytholog</span><span class="pill">Streamlit</span></div>
         <div class="proj-ft">
           <span class="proj-lnk">GitHub <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           <span class="p-stat ps-live">Complete</span>
@@ -1162,12 +1155,7 @@ html[data-theme="light"] .hero-eyebrow{
       </div>
     </a>
 
-    <a class="proj-card-link rv hidden-proj" href="https://github.com/haseebarif11/family-chatbot-neo4j" target="_blank" rel="noopener" style="display:none;">
-      <div class="proj-card" style="--pc:var(--cyan);">
-        <div class="proj-top"><span class="proj-num">08</span><div class="proj-ico" style="background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.3);color:#38bdf8;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M12 6v4M8 14v-4H6a2 2 0 00-2 2v2M16 14v-4h2a2 2 0 012 2v2"/><circle cx="6" cy="17" r="2"/><circle cx="12" cy="17" r="2"/><circle cx="18" cy="17" r="2"/><path d="M12 10v4"/></svg></div></div>
-        <span class="proj-year">2026</span><div class="proj-name">Family Chatbot — Neo4j</div>
-        <p class="proj-desc">Conversational chatbot backed by a Neo4j graph database for intelligent family-relationship queries. Uses Cypher queries and LLM integration to answer complex multi-hop questions about family trees.</p>
-        <div class="proj-pills"><span class="pill">Python</span><span class="pill">Neo4j</span><span class="pill">Cypher</span><span class="pill">LangChain</span><span class="pill">Graph DB</span></div>
+    <!-- HIDDEN PROJECTS (Show More) -->
         <div class="proj-ft">
           <span class="proj-lnk">GitHub <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           <span class="p-stat ps-live">Complete</span>
@@ -1483,22 +1471,33 @@ html[data-theme="light"] .hero-eyebrow{
 /* THREE.JS */
 (function(){
   const c=document.getElementById('nw');if(!c||!window.THREE)return;
-  const r=new THREE.WebGLRenderer({canvas:c,alpha:true,antialias:true});
-  r.setPixelRatio(Math.min(devicePixelRatio,2));r.setSize(innerWidth,innerHeight);
+  const r=new THREE.WebGLRenderer({canvas:c,alpha:true,antialias:false,powerPreference:'low-power'});
+  r.setPixelRatio(Math.min(devicePixelRatio,1.5));r.setSize(innerWidth,innerHeight);
   const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,0.1,1000);
   cam.position.z=5;
-  const pts=[],N=110;
+  const pts=[],N=70;/* reduced from 110 */
   for(let i=0;i<N;i++)pts.push(new THREE.Vector3((Math.random()-.5)*16,(Math.random()-.5)*10,(Math.random()-.5)*4));
   sc.add(new THREE.Points(new THREE.BufferGeometry().setFromPoints(pts),new THREE.PointsMaterial({color:0x3b82f6,size:.048,transparent:true,opacity:.7})));
-  const lp=[],lc=[],thr=2.7;
+  const lp=[],lc=[],thr=2.5;/* reduced connection threshold */
   for(let i=0;i<N;i++)for(let j=i+1;j<N;j++){const d=pts[i].distanceTo(pts[j]);if(d<thr){const a=1-d/thr;lp.push(pts[i].x,pts[i].y,pts[i].z,pts[j].x,pts[j].y,pts[j].z);lc.push(.23*a,.51*a,a,.22*a,.74*a,a);}}
   const lg=new THREE.BufferGeometry();lg.setAttribute('position',new THREE.Float32BufferAttribute(lp,3));lg.setAttribute('color',new THREE.Float32BufferAttribute(lc,3));
   const lm=new THREE.LineSegments(lg,new THREE.LineBasicMaterial({vertexColors:true,transparent:true,opacity:.2}));
   sc.add(lm);
   const mesh=sc.children[0];let mx=0,my=0;
-  document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2;});
-  window.addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();r.setSize(innerWidth,innerHeight);});
-  let t=0;(function loop(){requestAnimationFrame(loop);t+=.003;mesh.rotation.y=t*.1+mx*.07;mesh.rotation.x=t*.05+my*.04;lm.rotation.y=mesh.rotation.y;lm.rotation.x=mesh.rotation.x;r.render(sc,cam);})();
+  document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2;},{passive:true});
+  window.addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();r.setSize(innerWidth,innerHeight);},{passive:true});
+  let t=0,threeActive=true;
+  document.addEventListener('visibilitychange',()=>{threeActive=!document.hidden;});
+  let lastThree=0;
+  (function loop(ts){
+    requestAnimationFrame(loop);
+    if(!threeActive) return;
+    if(ts-lastThree<33) return;/* cap at ~30fps */
+    lastThree=ts;
+    t+=.003;mesh.rotation.y=t*.1+mx*.07;mesh.rotation.x=t*.05+my*.04;
+    lm.rotation.y=mesh.rotation.y;lm.rotation.x=mesh.rotation.x;
+    r.render(sc,cam);
+  })();
 })();
 
 /* CUSTOM CURSOR */
@@ -1694,7 +1693,7 @@ window.showToast=showToast;
     /* NO base border — just the comet. The static dim outline caused ghost box lines. */
 
     /* 2 — comet trail (tail→head) */
-    const SEG = 90;
+    const SEG = 45; /* reduced from 90 — halves canvas draw calls */
     for(let i=0; i<=SEG; i++){
       const t   = i/SEG;
       const pos = ((progress - cometLen*(1-t))%1+1)%1;
@@ -1850,19 +1849,25 @@ window.showToast=showToast;
   });
 
   /* ── Animation loop — ONE shared progress for all cards ─────── */
-  const BORDER_SPEED = 0.00018;   /* same speed for every card      */
-  let sharedProgress = 0;         /* single position — all in sync  */
-  let last=0;
+  const BORDER_SPEED = 0.00018;
+  let sharedProgress = 0;
+  let last=0, borderActive=true;
+  /* Pause when tab hidden */
+  document.addEventListener('visibilitychange',()=>{borderActive=!document.hidden;});
+  /* Throttle to ~30fps (every ~33ms) to halve GPU load */
+  const BORDER_INTERVAL = 33;
   function loop(ts){
-    const dt=Math.min(ts-last,32);
+    requestAnimationFrame(loop);
+    if(!borderActive) return;
+    const dt=Math.min(ts-last, 64);
+    if(dt < BORDER_INTERVAL) return;
     last=ts;
     sharedProgress=(sharedProgress+BORDER_SPEED*dt)%1;
     for(const e of entries){
       const rect=e.el.getBoundingClientRect();
-      if(!rect.width||rect.bottom<-200||rect.top>innerHeight+200) continue;
+      if(!rect.width||rect.bottom<-300||rect.top>innerHeight+300) continue;
       drawBorder(e.canvas, e.colors, sharedProgress);
     }
-    requestAnimationFrame(loop);
   }
   requestAnimationFrame(ts=>{last=ts;requestAnimationFrame(loop);});
 
@@ -2042,7 +2047,7 @@ window.showToast=showToast;
   /* ══════════════════════════════════════════════════
      GLOBE DATA
   ══════════════════════════════════════════════════ */
-  const GNODES = isMobile ? 90 : 120;
+  const GNODES = isMobile ? 60 : 90; /* reduced node counts for performance */
   let gnodes=[];
   function buildGlobe(){
     gnodes=[];
@@ -2079,7 +2084,7 @@ window.showToast=showToast;
   /* ══════════════════════════════════════════════════
      NET DATA  (scattered nodes all over screen)
   ══════════════════════════════════════════════════ */
-  const NET_COUNT = isMobile ? 70 : 90;
+  const NET_COUNT = isMobile ? 45 : 65; /* reduced for performance */
   let netNodes=[];
   let netPackets=[];
 
