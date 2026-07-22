@@ -1156,6 +1156,12 @@ html[data-theme="light"] .hero-eyebrow{
     </a>
 
     <!-- HIDDEN PROJECTS (Show More) -->
+    <a class="proj-card-link rv hidden-proj" href="https://github.com/haseebarif11/fake-news-detection-pipeline" target="_blank" rel="noopener" style="display:none;">
+      <div class="proj-card" style="--pc:var(--purple);">
+        <div class="proj-top"><span class="proj-num">07</span><div class="proj-ico" style="background:rgba(168,85,247,.08);border-color:rgba(168,85,247,.2);color:#a855f7;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div></div>
+        <span class="proj-year">2025</span><div class="proj-name">Fake News &amp; Misinformation Detection</div>
+        <p class="proj-desc">End-to-end NLP pipeline across 4 datasets (LIAR, ISOT, COVID-19, Twitter15/16). Fine-tuned BERT (100% on ISOT) &amp; RoBERTa (85.5% on COVID tweets). LIME explainability shows which words drive fake classifications. Streamlit web app included.</p>
+        <div class="proj-pills"><span class="pill">Python</span><span class="pill">PyTorch</span><span class="pill">BERT</span><span class="pill">RoBERTa</span><span class="pill">HuggingFace</span><span class="pill">LIME</span><span class="pill">Streamlit</span></div>
         <div class="proj-ft">
           <span class="proj-lnk">GitHub <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           <span class="p-stat ps-live">Complete</span>
@@ -1163,12 +1169,12 @@ html[data-theme="light"] .hero-eyebrow{
       </div>
     </a>
 
-    <a class="proj-card-link rv hidden-proj" href="https://github.com/haseebarif11/n8n-practice" target="_blank" rel="noopener" style="display:none;">
+    <a class="proj-card-link rv hidden-proj" href="https://github.com/haseebarif11/Titanic-Survival-Prediction-Analysis" target="_blank" rel="noopener" style="display:none;">
       <div class="proj-card" style="--pc:var(--green);">
-        <div class="proj-top"><span class="proj-num">09</span><div class="proj-ico" style="background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.2);color:#34d399;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div></div>
-        <span class="proj-year">2026</span><div class="proj-name">n8n Practice Workflows</div>
-        <p class="proj-desc">Collection of practical n8n automation workflows covering API integrations, scheduled tasks, webhook triggers, and multi-step data pipelines — built to master low-code automation patterns.</p>
-        <div class="proj-pills"><span class="pill">n8n</span><span class="pill">Automation</span><span class="pill">API Integration</span><span class="pill">Webhooks</span></div>
+        <div class="proj-top"><span class="proj-num">08</span><div class="proj-ico" style="background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.2);color:#34d399;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-8"/></svg></div></div>
+        <span class="proj-year">2024</span><div class="proj-name">Titanic Survival Prediction</div>
+        <p class="proj-desc">End-to-end ML pipeline with EDA, feature engineering, and model comparison across Random Forest, Decision Tree, and KNN classifiers using Scikit-Learn.</p>
+        <div class="proj-pills"><span class="pill">Python</span><span class="pill">Scikit-Learn</span><span class="pill">Pandas</span><span class="pill">EDA</span></div>
         <div class="proj-ft">
           <span class="proj-lnk">GitHub <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           <span class="p-stat ps-live">Complete</span>
@@ -1849,17 +1855,17 @@ window.showToast=showToast;
   });
 
   /* ── Animation loop — ONE shared progress for all cards ─────── */
-  const BORDER_SPEED = 0.00018;
+  const BORDER_SPEED = 0.00055; /* 3x faster lights */
   let sharedProgress = 0;
   let last=0, borderActive=true;
   /* Pause when tab hidden */
   document.addEventListener('visibilitychange',()=>{borderActive=!document.hidden;});
-  /* Throttle to ~30fps (every ~33ms) to halve GPU load */
-  const BORDER_INTERVAL = 33;
+  /* Throttle to ~40fps (every 25ms) — good balance of smooth & light */
+  const BORDER_INTERVAL = 25;
   function loop(ts){
     requestAnimationFrame(loop);
     if(!borderActive) return;
-    const dt=Math.min(ts-last, 64);
+    const dt=Math.min(ts-last, 50);
     if(dt < BORDER_INTERVAL) return;
     last=ts;
     sharedProgress=(sharedProgress+BORDER_SPEED*dt)%1;
@@ -2314,14 +2320,16 @@ window.showToast=showToast;
   function triggerExplosion(){
     STATE='exploding'; stateT=0; bloomFlash=1;
     buildShards();
-    shockwaves.push({x:CX,y:CY,r:0,alpha:0.9,col:'#7dd3fc'});
-    shockwaves.push({x:CX,y:CY,r:18,alpha:0.55,col:'#a5b4fc'});
+    /* 3 shockwave rings for more impact */
+    shockwaves.push({x:CX,y:CY,r:0,  alpha:1.0, col:'#7dd3fc'});
+    shockwaves.push({x:CX,y:CY,r:22, alpha:0.7, col:'#a5b4fc'});
+    shockwaves.push({x:CX,y:CY,r:44, alpha:0.45,col:'#f8fafc'});
     gnodes.forEach(n=>{
-      const angle=Math.atan2(n.y-CY,n.x-CX)+(Math.random()-.5)*0.45;
-      const speed=14+Math.random()*32;
+      const angle=Math.atan2(n.y-CY,n.x-CX)+(Math.random()-.5)*0.6;
+      const speed=18+Math.random()*40; /* faster burst */
       n.expX=n.x; n.expY=n.y;
-      n.expVX=Math.cos(angle)*speed+(Math.random()-.5)*10;
-      n.expVY=Math.sin(angle)*speed+(Math.random()-.5)*10;
+      n.expVX=Math.cos(angle)*speed+(Math.random()-.5)*12;
+      n.expVY=Math.sin(angle)*speed+(Math.random()-.5)*12;
       n.expAlpha=1;
       n.col=COLS[Math.floor(Math.random()*COLS.length)];
     });
@@ -2369,8 +2377,11 @@ window.showToast=showToast;
   /* ══════════════════════════════════════════════════
      MAIN LOOP
   ══════════════════════════════════════════════════ */
-  function draw(){
+  let lastDraw=0, drawDt=16;
+  function draw(ts){
     requestAnimationFrame(draw);
+    drawDt = Math.min(ts - lastDraw, 64);
+    lastDraw = ts;
     frame++;
     ctx.clearRect(0,0,W,H);
     const isDark=document.documentElement.dataset.theme!=='light';
@@ -2378,7 +2389,7 @@ window.showToast=showToast;
     /* ── shared: shockwaves ─────────────────────── */
     shockwaves=shockwaves.filter(s=>s.alpha>0.01);
     shockwaves.forEach(s=>{
-      s.r+=16+s.r*.045; s.alpha-=.026;
+      s.r+=22+s.r*.06; s.alpha-=.032; /* faster expanding shockwave */
       ctx.save();
       if(isDark) ctx.globalCompositeOperation='lighter';
       ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
@@ -2466,7 +2477,7 @@ window.showToast=showToast;
        STATE: EXPLODING — soft ice constellation dissolve
     ════════════════════════════════════════════ */
     else if(STATE==='exploding'){
-      stateT++;
+      stateT += drawDt / 16; /* time-based: ~1 unit per frame at 60fps */
 
       ctx.save();
       if(isDark) ctx.globalCompositeOperation='lighter';
@@ -2479,12 +2490,13 @@ window.showToast=showToast;
       drawRadialBloom(CX,CY,stateT);
       drawStarburst(CX,CY,stateT);
 
+      const spf=drawDt/16; /* scale per-frame physics by real dt */
       shards.forEach(s=>{
         s.trail.push({x:s.x,y:s.y});
-        if(s.trail.length>12)s.trail.shift();
-        s.x+=s.vx; s.y+=s.vy;
-        s.vx*=0.94; s.vy*=0.94; s.vy+=0.06;
-        s.life-=s.tier==='wisp'?0.015:0.011;
+        if(s.trail.length>8)s.trail.shift();
+        s.x+=s.vx*spf; s.y+=s.vy*spf;
+        s.vx*=Math.pow(0.93,spf); s.vy*=Math.pow(0.93,spf); s.vy+=0.07*spf;
+        s.life-=(s.tier==='wisp'?0.022:0.018)*spf;
         s.alpha=Math.max(0,s.life);
         if(s.alpha<=0) return;
 
@@ -2510,17 +2522,17 @@ window.showToast=showToast;
       });
 
       sparks.forEach(sp=>{
-        sp.x+=sp.vx; sp.y+=sp.vy;
-        sp.vx*=0.95; sp.vy*=0.95; sp.vy+=0.1;
-        sp.life-=0.014; sp.alpha=Math.max(0,sp.life);
+        sp.x+=sp.vx*spf; sp.y+=sp.vy*spf;
+        sp.vx*=Math.pow(0.94,spf); sp.vy*=Math.pow(0.94,spf); sp.vy+=0.1*spf;
+        sp.life-=0.022*spf; sp.alpha=Math.max(0,sp.life);
         if(sp.alpha<=0) return;
         drawGlowingOrb(sp.x,sp.y,sp.r,sp.col,sp.alpha*0.75);
       });
 
       gnodes.forEach(n=>{
-        n.expX+=n.expVX; n.expY+=n.expVY;
-        n.expVX*=0.948; n.expVY*=0.948; n.expVY+=0.035;
-        n.expAlpha=Math.max(0,n.expAlpha-0.0045);
+        n.expX+=n.expVX*spf; n.expY+=n.expVY*spf;
+        n.expVX*=Math.pow(0.945,spf); n.expVY*=Math.pow(0.945,spf); n.expVY+=0.04*spf;
+        n.expAlpha=Math.max(0,n.expAlpha-0.007*spf);
         if(n.expAlpha<=0) return;
         drawGlowingOrb(n.expX,n.expY,n.size*1.05,n.col,n.expAlpha*0.9);
         n.conn.forEach(j=>{
