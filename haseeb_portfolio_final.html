@@ -610,12 +610,12 @@ html[data-theme="dark"] .edu-card:hover{
 }
 
 /* Stagger speed slightly per card type for variety */
-.sk-card   { --bspd: 8s; }
-.edu-card  { --bspd: 10s; }
-.exp-card  { --bspd: 7.5s; }
-.profile-card { --bspd: 12s; }
+.sk-card   { --bspd: 3.8s; }
+.edu-card  { --bspd: 4.6s; }
+.exp-card  { --bspd: 3.5s; }
+.profile-card { --bspd: 5s; }
 
-/* The sleek, professional slow-spinning gradient */
+/* The sleek, glowing comet tail */
 .roam-css-glow {
   position: absolute;
   top: -50%; left: -50%;
@@ -623,12 +623,14 @@ html[data-theme="dark"] .edu-card:hover{
   background: conic-gradient(
     from var(--ba),
     transparent 0%,
-    transparent 70%,
-    color-mix(in srgb, var(--pc, var(--cyan)) 30%, transparent) 85%,
-    color-mix(in srgb, var(--pc, var(--cyan)) 70%, transparent) 95%,
+    transparent 60%,
+    color-mix(in srgb, var(--pc, var(--cyan)) 10%, transparent) 70%,
+    color-mix(in srgb, var(--pc, var(--cyan)) 40%, transparent) 85%,
+    color-mix(in srgb, var(--pc, var(--cyan)) 80%, white 20%) 95%,
+    white 98%,
     transparent 100%
   );
-  animation: border-spin var(--bspd, 8s) linear infinite;
+  animation: border-spin var(--bspd, 4s) linear infinite;
   z-index: 0;
   pointer-events: none;
 }
@@ -638,8 +640,8 @@ html[data-theme="dark"] .edu-card:hover{
   position: absolute;
   inset: 0;
   background: inherit;
-  filter: blur(8px);
-  opacity: 0.6;
+  filter: blur(6px);
+  opacity: 0.8;
 }
 
 /* The dark background to cover the center */
