@@ -491,6 +491,9 @@ html[data-theme="light"] .ct-github:hover{background:rgba(15,23,42,.09);box-shad
   /* Hide massive glowing orbs on mobile — they overlap and make the hero look completely light/washed out */
   .orb{display:none !important;}
 
+  /* Remove hero aurora gradients and grid on mobile so it's perfectly dark like the rest of the page */
+  .hero-wrap::before, .hero-wrap::after, .grid-bg { display: none !important; }
+
   /* Hide ambient labels on mobile (overflow issues) */
   .amb-label{display:none;}
 
@@ -2018,7 +2021,7 @@ window.showToast=showToast;
         x: 40+Math.random()*(W-80),
         y: 40+Math.random()*(H-80),
         ox:0,oy:0, vx:0,vy:0,
-        size:1.4+Math.random()*2.2,
+        size: (1.4+Math.random()*2.2) * (isMobile ? 1.5 : 1), // larger on mobile
         col:COLS[Math.floor(Math.random()*COLS.length)],
         pulse:Math.random()*Math.PI*2,
         active:false, activeFade:0,
@@ -2038,7 +2041,7 @@ window.showToast=showToast;
       const y=Math.max(42,Math.min(H-42,source.expY+Math.sin(angle)*jitter));
       netNodes.push({
         x,y, ox:x,oy:y, vx:0,vy:0,
-        size:1.4+Math.random()*2.2,
+        size: (1.4+Math.random()*2.2) * (isMobile ? 1.5 : 1), // larger on mobile
         col:source.col||COLS[Math.floor(Math.random()*COLS.length)],
         pulse:Math.random()*Math.PI*2,
         active:false, activeFade:0,
@@ -2101,7 +2104,7 @@ window.showToast=showToast;
         tier:'orb',
         x:CX,y:CY,
         vx:Math.cos(angle)*speed, vy:Math.sin(angle)*speed,
-        r:1.4+Math.random()*2.8,
+        r: (1.4+Math.random()*2.8) * (isMobile ? 1.5 : 1),
         col:COLS[Math.floor(Math.random()*COLS.length)],
         alpha:1, life:1, trail:[],
       });
@@ -2114,8 +2117,8 @@ window.showToast=showToast;
         tier:'wisp',
         x:CX,y:CY,
         vx:Math.cos(angle)*speed, vy:Math.sin(angle)*speed,
-        r:0.6+Math.random()*1.2,
-        len:18+Math.random()*42,
+        r: (0.6+Math.random()*1.2) * (isMobile ? 1.5 : 1),
+        len: (18+Math.random()*42) * (isMobile ? 1.5 : 1),
         col:COLS[Math.floor(Math.random()*COLS.length)],
         alpha:1, life:1, trail:[],
       });
@@ -2127,7 +2130,7 @@ window.showToast=showToast;
       sparks.push({
         x:CX+(Math.random()-.5)*24, y:CY+(Math.random()-.5)*24,
         vx:Math.cos(angle)*speed, vy:Math.sin(angle)*speed,
-        r:0.35+Math.random()*1.0,
+        r: (0.35+Math.random()*1.0) * (isMobile ? 1.5 : 1),
         col:COLS[Math.floor(Math.random()*COLS.length)],
         alpha:1, life:0.7+Math.random()*0.5,
       });
