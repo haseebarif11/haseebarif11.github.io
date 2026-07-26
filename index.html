@@ -2399,13 +2399,6 @@
         display: none;
       }
 
-      /* Disable lift-on-hover for touch devices — prevents stuck transform after back-navigation */
-      .proj-card:hover,
-      a.proj-card-link:hover .proj-card {
-        transform: none !important;
-        box-shadow: none;
-      }
-
       /* Mobile fallback: animated glow box-shadow on project cards (works on all iOS/Android) */
       @keyframes mob-border-glow {
         0%   { box-shadow: 0 0 0 1.5px rgba(103,232,249,0.6), 0 0 14px rgba(103,232,249,0.2); }
