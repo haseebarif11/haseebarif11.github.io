@@ -2398,6 +2398,42 @@
       .roam-canvas {
         display: none;
       }
+
+      /* Mobile fallback: animated glowing border on project cards */
+      .proj-card {
+        border: 1px solid transparent !important;
+        background-clip: padding-box !important;
+        position: relative;
+      }
+      .proj-card::before {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        border-radius: 18px;
+        padding: 1px;
+        background: linear-gradient(var(--mob-ba, 0deg),
+          rgba(103,232,249,0.7) 0%,
+          rgba(168,85,247,0.5) 25%,
+          rgba(103,232,249,0.1) 50%,
+          rgba(168,85,247,0.5) 75%,
+          rgba(103,232,249,0.7) 100%
+        );
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        animation: mob-border-spin 4s linear infinite;
+        pointer-events: none;
+        z-index: 0;
+      }
+      @keyframes mob-border-spin {
+        from { --mob-ba: 0deg; }
+        to   { --mob-ba: 360deg; }
+      }
+      @property --mob-ba {
+        syntax: '<angle>';
+        initial-value: 0deg;
+        inherits: false;
+      }
     }
 
     /* ══════════════════════════════════════════
