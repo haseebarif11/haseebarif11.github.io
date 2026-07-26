@@ -241,10 +241,48 @@ section::before{
 .profile-card:hover{transform:translateY(-6px);box-shadow:0 24px 48px rgba(0,0,0,.35);}
 html[data-theme="light"] .profile-card{background:linear-gradient(165deg,#f0f8ff 0%,#e2eeff 45%);border-color:rgba(59,130,246,.2);}
 html[data-theme="light"] .profile-card::before{background:radial-gradient(circle at 50% 0%,rgba(59,130,246,.08),transparent 38%);}
-.pc-top{height:112px;background:linear-gradient(135deg,rgba(59,130,246,.22),rgba(56,189,248,.13),rgba(165,243,252,.1));position:relative;}
-.pc-avatar{position:absolute;bottom:-36px;left:50%;transform:translateX(-50%);width:76px;height:76px;border-radius:50%;background:var(--cardGrad);border:2px solid rgba(59,130,246,.5);display:flex;align-items:center;justify-content:center;font-family:'Sora', sans-serif;font-size:1.8rem;font-weight:700;box-shadow:0 0 0 4px rgba(59,130,246,.08),0 0 24px rgba(59,130,246,.2);}
+.pc-top {
+  height: 140px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, .22), rgba(56, 189, 248, .13), rgba(165, 243, 252, .1));
+  position: relative;
+  background-size: cover;
+  background-position: center top;
+  overflow: hidden;
+}
+.pc-top::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(3,12,26,0.45) 100%);
+  pointer-events: none;
+}
+.pc-avatar {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: var(--cardGrad);
+  border: 3px solid rgba(103, 232, 249, .7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Sora', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  box-shadow: 0 0 0 5px rgba(3,12,26,1), 0 0 0 7px rgba(59, 130, 246, .25), 0 0 30px rgba(59, 130, 246, .35);
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  z-index: 2;
+}
 .av-txt{background:linear-gradient(135deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.pc-body{padding:42px 22px 22px;text-align:center;}
+.pc-body {
+  padding: 52px 22px 22px;
+  text-align: center;
+}
 .pc-name{font-family:'Syne', sans-serif;font-size:1.28rem;font-weight:700;margin-bottom:3px;letter-spacing:-.02em;background:linear-gradient(110deg,var(--text) 40%,var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .pc-role{font-size:.72rem;color:var(--cyan);margin-bottom:20px;letter-spacing:.12em;text-transform:uppercase;font-family:'JetBrains Mono', monospace;}
 .pc-info{display:flex;flex-direction:column;gap:8px;}
@@ -1084,7 +1122,7 @@ html[data-theme="light"] .hero-eyebrow{
     </div>
     <div class="rv-r">
       <div class="profile-card">
-        <div class="pc-top" style="background-image: url('background.png'); background-size: cover; background-position: center;"><div class="pc-avatar" style="background-image: url('profile.png'); background-size: cover; background-position: center;"><span class="av-txt" style="display: none;">HA</span></div></div>
+        <div class="pc-top" style="background-image: url('background.png'); background-size: cover; background-position: center top;"><div class="pc-avatar" style="background-image: url('profile.png'); background-size: cover; background-position: center;"><span class="av-txt" style="display: none;">HA</span></div></div>
         <div class="pc-body">
           <div class="pc-name">Haseeb Arif</div>
           <div class="pc-role">AI / ML Engineer</div>
