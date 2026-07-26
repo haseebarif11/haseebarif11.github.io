@@ -279,13 +279,13 @@ html[data-theme="light"] .profile-card::before{background:radial-gradient(circle
 a.proj-card-link{display:flex;text-decoration:none;color:inherit;border-radius:18px;height:100%;}
 a.proj-card-link:focus{outline:2px solid var(--cyan);outline-offset:3px;}
 
-.proj-card{background:var(--cardGrad);border:1px solid var(--border);border-radius:18px;padding:30px;position:relative;overflow:hidden;transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s;cursor:pointer;display:flex;flex-direction:column;width:100%;min-height:100%;}
+.proj-card{background:var(--cardGrad);border:1px solid var(--border);border-radius:18px;padding:20px;position:relative;overflow:hidden;transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s;cursor:pointer;display:flex;flex-direction:column;width:100%;min-height:100%;}
 /* proj-card top accent removed — handled by roaming canvas */
 .proj-card:hover{transform:translateY(-8px);box-shadow:0 28px 56px rgba(0,0,10,.5),0 0 40px rgba(59,130,246,.06);}
-.proj-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.proj-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
 .proj-num{font-family:'JetBrains Mono', monospace;font-size:.62rem;letter-spacing:.1em;color:var(--muted);}
-.proj-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;}
-.proj-ico svg{width:22px;height:22px;flex-shrink:0;}
+.proj-ico{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;}
+.proj-ico svg{width:20px;height:20px;flex-shrink:0;}
 .proj-name{font-family:'Syne', sans-serif;font-weight:900;font-size:1.18rem;margin:10px 0 10px;line-height:1.2;padding-right:0;}
 .proj-desc{color:var(--muted2);font-size:.86rem;line-height:1.78;margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;}
 .proj-pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px;}
@@ -998,7 +998,7 @@ html[data-theme="light"] .hero-eyebrow{
       <span class="ln l3 tagline-gap" style="font-size:clamp(1.1rem,2.8vw,2.8rem);font-weight:700;letter-spacing:-.02em;"><span class="wd grd-sub">Building Intelligent Systems</span></span>
     </h1>
     <div class="typed-wrap">
-      <span class="typed-label">I specialise in&nbsp;</span>
+      <span class="typed-label">I <strong style="font-weight:700; background:linear-gradient(110deg,var(--cyan),#93c5fd 50%,var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">specialise</strong> in&nbsp;</span>
       <span class="typed-txt" id="typed"></span><span class="typed-cur"></span>
     </div>
     <p class="hero-sub">AI Engineering student at <strong>UMT</strong> building production-ready <strong>AI Agents</strong>, <strong>Automation Pipelines</strong>, <strong>NLP Transformers</strong> and <strong>ML Systems</strong> that teams actually use every day.</p>
@@ -1084,7 +1084,7 @@ html[data-theme="light"] .hero-eyebrow{
     </div>
     <div class="rv-r">
       <div class="profile-card">
-        <div class="pc-top"><div class="pc-avatar"><span class="av-txt">HA</span></div></div>
+        <div class="pc-top" style="background-image: url('YOUR_LINKEDIN_BG_IMAGE_URL.jpg'); background-size: cover; background-position: center;"><div class="pc-avatar" style="background-image: url('https://github.com/haseebarif11.png'); background-size: cover; background-position: center;"><span class="av-txt" style="display: none;">HA</span></div></div>
         <div class="pc-body">
           <div class="pc-name">Haseeb Arif</div>
           <div class="pc-role">AI / ML Engineer</div>
@@ -1345,7 +1345,7 @@ html[data-theme="light"] .hero-eyebrow{
 
     <!-- VISIBLE: first 3 -->
     <a class="edu-card rv cert-card" href="https://graphacademy.neo4j.com/c/dacdaa1e-cf97-4a3b-a700-bcda10bb4beb" target="_blank" rel="noopener" style="text-decoration:none;display:block;cursor:pointer;">
-      <div class="edu-deg" style="color:var(--text);">Neo4j Certified Professional</div>
+      <div class="edu-deg" style="color:var(--text); white-space:nowrap; font-size:0.85rem;">Neo4j Certified Professional</div>
       <div class="edu-inst" style="color:var(--muted2);">Neo4j</div>
       <div class="edu-meta"><span>Credential</span></div>
       <div class="chips"><span class="chip">Graph DB</span><span class="chip">Cypher</span><span class="chip">Data Modeling</span><span class="chip">Neo4j</span></div>
@@ -1452,12 +1452,13 @@ html[data-theme="light"] .hero-eyebrow{
       <div class="chips"><span class="chip">Machine Learning</span><span class="chip">OOP (C++)</span><span class="chip">Database Systems</span><span class="chip">Deep Learning</span><span class="chip">Computer Vision</span><span class="chip">Operating Systems</span><span class="chip">Programming for AI</span><span class="chip">Front-End Web Dev</span></div>
     </div>
     <div class="edu-card rv">
-      <span class="edu-badge eb-cert">Certificate</span>
-      <div class="edu-deg">Internship Completion Certificate</div>
+      <span class="edu-badge eb-cert">Internship</span>
+      <div class="edu-deg">Internship Completion Certificate in Automation & Engineering</div>
       <div class="edu-inst">Coding Caliber Private Ltd</div>
       <div class="edu-meta"><span>Issued Feb 2026</span><span>3-Month Programme</span></div>
       <p class="edu-desc">Completed a structured internship in Automation & Integration Development. Demonstrated proficiency in multi-step webhook workflows, API auth, error handling, and production deployment on Cloudflare Tunnels.</p>
       <div class="chips"><span class="chip">AI Automation</span><span class="chip">n8n Workflows</span><span class="chip">API Integration</span><span class="chip">Production Deployment</span></div>
+      <a href="YOUR_EXPERIENCE_LETTER_LINK_HERE" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--cyan);text-decoration:none;margin-top:12px;">View Experience Letter ⟶</a>
     </div>
 
     <div class="edu-card rv">
