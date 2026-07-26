@@ -242,46 +242,48 @@ section::before{
 html[data-theme="light"] .profile-card{background:linear-gradient(165deg,#f0f8ff 0%,#e2eeff 45%);border-color:rgba(59,130,246,.2);}
 html[data-theme="light"] .profile-card::before{background:radial-gradient(circle at 50% 0%,rgba(59,130,246,.08),transparent 38%);}
 .pc-top {
-  height: 140px;
-  background: linear-gradient(135deg, rgba(59, 130, 246, .22), rgba(56, 189, 248, .13), rgba(165, 243, 252, .1));
+  height: 150px;
+  background-color: #0a1228;
   position: relative;
-  background-size: cover;
-  background-position: center top;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
   overflow: hidden;
 }
 .pc-top::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(3,12,26,0.45) 100%);
+  background: linear-gradient(to bottom, rgba(3,12,26,0) 40%, rgba(3,12,26,0.6) 100%);
   pointer-events: none;
+  z-index: 1;
 }
 .pc-avatar {
   position: absolute;
-  bottom: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 88px;
-  height: 88px;
+  bottom: -44px;
+  left: 28px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  background: var(--cardGrad);
-  border: 3px solid rgba(103, 232, 249, .7);
+  background-color: var(--surface);
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  border: 3px solid #0a1228;
+  box-shadow: 0 0 0 2px rgba(103, 232, 249, .55), 0 4px 24px rgba(0,0,0,.6);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Sora', sans-serif;
   font-size: 1.8rem;
   font-weight: 700;
-  box-shadow: 0 0 0 5px rgba(3,12,26,1), 0 0 0 7px rgba(59, 130, 246, .25), 0 0 30px rgba(59, 130, 246, .35);
-  background-size: cover;
-  background-position: center;
   overflow: hidden;
   z-index: 2;
 }
 .av-txt{background:linear-gradient(135deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .pc-body {
-  padding: 52px 22px 22px;
-  text-align: center;
+  padding: 54px 22px 22px;
+  text-align: left;
 }
 .pc-name{font-family:'Syne', sans-serif;font-size:1.28rem;font-weight:700;margin-bottom:3px;letter-spacing:-.02em;background:linear-gradient(110deg,var(--text) 40%,var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .pc-role{font-size:.72rem;color:var(--cyan);margin-bottom:20px;letter-spacing:.12em;text-transform:uppercase;font-family:'JetBrains Mono', monospace;}
