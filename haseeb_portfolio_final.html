@@ -2023,19 +2023,19 @@
     .rv {
       opacity: 0;
       transform: translateY(28px);
-      transition: opacity .75s ease, transform .75s cubic-bezier(.16, 1, .3, 1);
+      transition: opacity .4s ease, transform .4s cubic-bezier(.16, 1, .3, 1);
     }
 
     .rv-l {
       opacity: 0;
       transform: translateX(-28px);
-      transition: opacity .75s ease, transform .75s cubic-bezier(.16, 1, .3, 1);
+      transition: opacity .4s ease, transform .4s cubic-bezier(.16, 1, .3, 1);
     }
 
     .rv-r {
       opacity: 0;
       transform: translateX(28px);
-      transition: opacity .75s ease, transform .75s cubic-bezier(.16, 1, .3, 1);
+      transition: opacity .4s ease, transform .4s cubic-bezier(.16, 1, .3, 1);
     }
 
     .rv.in,
@@ -4339,7 +4339,7 @@
     setTimeout(type, 1800);
 
     /* REVEAL */
-    const rObs = new IntersectionObserver(en => { en.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('in'), i * 55); rObs.unobserve(e.target); } }); }, { threshold: .1 });
+    const rObs = new IntersectionObserver(en => { en.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('in'), i * 30); rObs.unobserve(e.target); } }); }, { threshold: .1 });
     document.querySelectorAll('.rv,.rv-l,.rv-r').forEach(el => rObs.observe(el));
 
     /* STAT CARDS ANIMATION */
