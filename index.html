@@ -90,35 +90,9 @@
       will-change: transform;
     }
 
-    .sk-fill {
-      will-change: transform;
-    }
-
-    .rv,
-    .rv-l,
-    .rv-r {
-      will-change: opacity, transform;
-    }
-
-    nav {
-      will-change: transform;
-    }
-
-    #pbar {
-      will-change: transform, width;
-    }
-
     .roam-canvas {
-      will-change: contents;
       transform: translateZ(0);
       pointer-events: none;
-    }
-
-    /* content-visibility only for far-off sections to avoid layout issues */
-    #skills,
-    #contact {
-      content-visibility: auto;
-      contain-intrinsic-size: auto 600px;
     }
 
     a:focus-visible,
@@ -4225,7 +4199,7 @@
       let lastThree = 0;
       (function loop(ts) {
         requestAnimationFrame(loop);
-        if (!threeActive) return;
+        if (!threeActive || c.offsetWidth === 0 || c.style.display === 'none') return;
         if (ts - lastThree < 33) return;/* cap at ~30fps */
         lastThree = ts;
         t += .003; mesh.rotation.y = t * .1 + mx * .07; mesh.rotation.x = t * .05 + my * .04;
@@ -4234,37 +4208,58 @@
       })();
     })();
 
-    /* CUSTOM CURSOR */
+    /* CUSTOM CURSOR — idle-paused rAF */
     const dot = document.getElementById('cur-dot'), ring = document.getElementById('cur-ring');
-    let cx = 0, cy = 0, rx = 0, ry = 0;
-    /* Use transform instead of left/top to avoid layout reflows */
-    dot.style.left = '0'; dot.style.top = '0';
-    ring.style.left = '0'; ring.style.top = '0';
-    document.addEventListener('mousemove', e => {
-      cx = e.clientX; cy = e.clientY;
-      dot.style.transform = `translate(calc(-50% + ${cx}px),calc(-50% + ${cy}px))`;
-    }, { passive: true });
-    (function lerpRing() {
-      requestAnimationFrame(lerpRing);
-      rx += (cx - rx) * .12; ry += (cy - ry) * .12;
-      ring.style.transform = `translate(calc(-50% + ${rx}px),calc(-50% + ${ry}px))`;
-    })();
-    document.querySelectorAll('a,button,.proj-card,.sk-card,.stat-c,.edu-card,.profile-card').forEach(el => {
-      el.addEventListener('mouseenter', () => { dot.classList.add('hov'); ring.classList.add('hov'); });
-      el.addEventListener('mouseleave', () => { dot.classList.remove('hov'); ring.classList.remove('hov'); });
-    });
+    if (dot && ring) {
+      let cx = -100, cy = -100, rx = -100, ry = -100;
+      let cursorAnimating = false;
+      dot.style.left = '0'; dot.style.top = '0';
+      ring.style.left = '0'; ring.style.top = '0';
 
-    /* SCROLL — throttled via rAF to prevent layout thrashing */
+      function updateRing() {
+        const dx = cx - rx, dy = cy - ry;
+        if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
+          rx += dx * .15; ry += dy * .15;
+          ring.style.transform = `translate(calc(-50% + ${rx}px),calc(-50% + ${ry}px))`;
+          requestAnimationFrame(updateRing);
+        } else {
+          cursorAnimating = false;
+        }
+      }
+
+      document.addEventListener('mousemove', e => {
+        cx = e.clientX; cy = e.clientY;
+        dot.style.transform = `translate(calc(-50% + ${cx}px),calc(-50% + ${cy}px))`;
+        if (!cursorAnimating) {
+          cursorAnimating = true;
+          requestAnimationFrame(updateRing);
+        }
+      }, { passive: true });
+
+      document.querySelectorAll('a,button,.proj-card,.sk-card,.stat-c,.edu-card,.profile-card').forEach(el => {
+        el.addEventListener('mouseenter', () => { dot.classList.add('hov'); ring.classList.add('hov'); });
+        el.addEventListener('mouseleave', () => { dot.classList.remove('hov'); ring.classList.remove('hov'); });
+      });
+    }
+
+    /* SCROLL — throttled via rAF & cached scrollHeight to prevent layout thrashing */
     const pbar = document.getElementById('pbar'), btt = document.getElementById('btt'), nav = document.getElementById('nav');
     let ly = 0, scrollTicking = false;
+    let cachedScrollH = document.documentElement.scrollHeight - window.innerHeight;
+    window.addEventListener('resize', () => {
+      cachedScrollH = document.documentElement.scrollHeight - window.innerHeight;
+    }, { passive: true });
+
     window.addEventListener('scroll', () => {
       if (!scrollTicking) {
         requestAnimationFrame(() => {
-          const y = scrollY, h = document.body.scrollHeight - innerHeight;
-          pbar.style.width = (y / h * 100) + '%';
-          btt.classList.toggle('vis', y > 400);
-          nav.classList.toggle('scrolled', y > 50);
-          if (y > ly + 8 && y > 200) nav.classList.add('hidden'); else if (y < ly - 8) nav.classList.remove('hidden');
+          const y = window.scrollY || window.pageYOffset;
+          if (cachedScrollH > 0 && pbar) pbar.style.width = (y / cachedScrollH * 100) + '%';
+          if (btt) btt.classList.toggle('vis', y > 400);
+          if (nav) {
+            nav.classList.toggle('scrolled', y > 50);
+            if (y > ly + 8 && y > 200) nav.classList.add('hidden'); else if (y < ly - 8) nav.classList.remove('hidden');
+          }
           ly = y;
           scrollTicking = false;
         });
@@ -4279,29 +4274,35 @@
 
     /* HAMBURGER */
     const ham = document.getElementById('ham'), mob = document.getElementById('mob');
-    ham.addEventListener('click', () => { ham.classList.toggle('open'); mob.classList.toggle('open'); document.body.style.overflow = mob.classList.contains('open') ? 'hidden' : ''; });
-    document.querySelectorAll('.ml').forEach(a => a.addEventListener('click', () => { ham.classList.remove('open'); mob.classList.remove('open'); document.body.style.overflow = ''; }));
+    if (ham && mob) {
+      ham.addEventListener('click', () => { ham.classList.toggle('open'); mob.classList.toggle('open'); document.body.style.overflow = mob.classList.contains('open') ? 'hidden' : ''; });
+      document.querySelectorAll('.ml').forEach(a => a.addEventListener('click', () => { ham.classList.remove('open'); mob.classList.remove('open'); document.body.style.overflow = ''; }));
+    }
 
     /* THEME */
     const tBtn = document.getElementById('themeToggle');
-    tBtn.addEventListener('click', () => {
-      const l = document.documentElement.dataset.theme === 'light';
-      document.documentElement.dataset.theme = l ? 'dark' : 'light';
-      tBtn.textContent = l ? '☀ Light' : '🌙 Dark';
-      const glowCards = [...document.querySelectorAll('.sk-card,.edu-card,.profile-card')];
-      glowCards.forEach((c, i) => {
-        c.style.animation = 'none';
-        void c.offsetHeight;
-        setTimeout(() => { c.style.animation = ''; }, i * 60);
+    if (tBtn) {
+      tBtn.addEventListener('click', () => {
+        const l = document.documentElement.dataset.theme === 'light';
+        document.documentElement.dataset.theme = l ? 'dark' : 'light';
+        tBtn.textContent = l ? '☀ Light' : '🌙 Dark';
+        const glowCards = [...document.querySelectorAll('.sk-card,.edu-card,.profile-card')];
+        glowCards.forEach((c, i) => {
+          c.style.animation = 'none';
+          void c.offsetHeight;
+          setTimeout(() => { c.style.animation = ''; }, i * 60);
+        });
       });
-    });
+    }
 
     /* TYPING */
     const typed = document.getElementById('typed');
-    const words = ['AI Agents', 'n8n Automation', 'ML Pipelines', 'NLP Pipelines', 'LLM Integration', 'Webhook Systems', 'Computer Vision'];
-    let wi = 0, ci = 0, del = false;
-    function type() { const w = words[wi]; typed.textContent = del ? w.slice(0, --ci) : w.slice(0, ++ci); if (!del && ci === w.length) { setTimeout(() => { del = true; setTimeout(type, 80); }, 1600); return; } if (del && ci === 0) { del = false; wi = (wi + 1) % words.length; } setTimeout(type, del ? 52 : 88); }
-    setTimeout(type, 1800);
+    if (typed) {
+      const words = ['AI Agents', 'n8n Automation', 'ML Pipelines', 'NLP Pipelines', 'LLM Integration', 'Webhook Systems', 'Computer Vision'];
+      let wi = 0, ci = 0, del = false;
+      function type() { const w = words[wi]; typed.textContent = del ? w.slice(0, --ci) : w.slice(0, ++ci); if (!del && ci === w.length) { setTimeout(() => { del = true; setTimeout(type, 80); }, 1600); return; } if (del && ci === 0) { del = false; wi = (wi + 1) % words.length; } setTimeout(type, del ? 52 : 88); }
+      setTimeout(type, 1800);
+    }
 
     /* REVEAL */
     const rObs = new IntersectionObserver(en => { en.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('in'), i * 30); rObs.unobserve(e.target); } }); }, { threshold: .1 });
@@ -4324,35 +4325,38 @@
     const statsRow = document.querySelector('.stats-row');
     if (statsRow) statObs.observe(statsRow);
 
-    /* SKILL BARS */
+    /* SKILL BARS — batched updates without forced reflow */
     function playSkillBars(card) {
       if (!card) return;
       if (card._skillAnimationFrame) cancelAnimationFrame(card._skillAnimationFrame);
       card.classList.remove('is-replaying');
-      void card.offsetWidth;
-      card.classList.add('is-replaying');
-      const duration = 2150;
-      card.querySelectorAll('.sk-fill').forEach(f => {
+      const fills = card.querySelectorAll('.sk-fill');
+      fills.forEach(f => {
         f.style.transition = 'none';
         f.style.transform = 'scaleX(0)';
-        void f.offsetWidth;
-        f.style.transition = `transform ${duration}ms cubic-bezier(.22,.8,.22,1)`;
-        f.style.transform = `scaleX(${(parseInt(f.dataset.w, 10) || 0) / 100})`;
       });
-      const meters = [...card.querySelectorAll('.sk-rw')].map(row => {
-        const pct = row.querySelector('.sk-pc');
-        const fill = row.parentElement.querySelector('.sk-fill');
-        return pct && fill ? { pct, target: parseInt(fill.dataset.w, 10) || 0 } : null;
-      }).filter(Boolean);
-      const start = performance.now();
-      const tick = now => {
-        const t = Math.min(1, (now - start) / duration);
-        const eased = 1 - Math.pow(1 - t, 3);
-        meters.forEach(({ pct, target }) => pct.textContent = Math.round(target * eased) + '%');
-        card._skillAnimationFrame = t < 1 ? requestAnimationFrame(tick) : null;
-      };
-      card._skillAnimationFrame = requestAnimationFrame(tick);
-      setTimeout(() => card.classList.remove('is-replaying'), duration);
+      requestAnimationFrame(() => {
+        card.classList.add('is-replaying');
+        const duration = 2150;
+        fills.forEach(f => {
+          f.style.transition = `transform ${duration}ms cubic-bezier(.22,.8,.22,1)`;
+          f.style.transform = `scaleX(${(parseInt(f.dataset.w, 10) || 0) / 100})`;
+        });
+        const meters = [...card.querySelectorAll('.sk-rw')].map(row => {
+          const pct = row.querySelector('.sk-pc');
+          const fill = row.parentElement.querySelector('.sk-fill');
+          return pct && fill ? { pct, target: parseInt(fill.dataset.w, 10) || 0 } : null;
+        }).filter(Boolean);
+        const start = performance.now();
+        const tick = now => {
+          const t = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - t, 3);
+          meters.forEach(({ pct, target }) => pct.textContent = Math.round(target * eased) + '%');
+          card._skillAnimationFrame = t < 1 ? requestAnimationFrame(tick) : null;
+        };
+        card._skillAnimationFrame = requestAnimationFrame(tick);
+        setTimeout(() => card.classList.remove('is-replaying'), duration);
+      });
     }
     const skObs = new IntersectionObserver(en => { en.forEach(e => { if (e.isIntersecting) { playSkillBars(e.target); skObs.unobserve(e.target); } }); }, { threshold: .3 });
     document.querySelectorAll('.sk-card').forEach(c => {
@@ -4383,7 +4387,7 @@
     function showToast(m) { const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
     window.showToast = showToast;
 
-    /* ─── ROAMING BORDER LIGHT ENGINE ──────────────────────────────── */
+    /* ─── ROAMING BORDER LIGHT ENGINE — Zero layout thrashing via IntersectionObserver ─── */
     (function () {
       /* 1. CSS DOM injection for non-project cards */
       document.querySelectorAll('.sk-card, .edu-card:not(.cert-card), .exp-card, .profile-card').forEach(el => {
@@ -4491,14 +4495,21 @@
       }
 
       const entries = [];
+      const borderObserver = new IntersectionObserver((obsEntries) => {
+        obsEntries.forEach(oe => {
+          const found = entries.find(e => e.el === oe.target);
+          if (found) found.isVisible = oe.isIntersecting;
+        });
+      }, { rootMargin: '200px 0px 200px 0px' });
 
       function setupBorderCard(el, colors, speed) {
         const canvas = document.createElement('canvas');
         canvas.className = 'roam-canvas';
         el.style.position = 'relative';
         el.insertBefore(canvas, el.firstChild);
-        const entry = { canvas, el, colors, speed, progress: Math.random() };
+        const entry = { canvas, el, colors, speed, progress: Math.random(), isVisible: false };
         entries.push(entry);
+        borderObserver.observe(el);
 
         function resize() {
           const dpr = window.devicePixelRatio || 1;
@@ -4530,8 +4541,7 @@
         last = ts;
         sharedProgress = (sharedProgress + BORDER_SPEED * dt) % 1;
         for (const e of entries) {
-          const rect = e.el.getBoundingClientRect();
-          if (!rect.width || rect.bottom < -300 || rect.top > innerHeight + 300) continue;
+          if (!e.isVisible) continue;
           drawBorder(e.canvas, e.colors, sharedProgress);
         }
       }
