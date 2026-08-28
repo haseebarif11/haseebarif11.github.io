@@ -80,6 +80,8 @@
       will-change: transform;
       transform: translateZ(0);
       backface-visibility: hidden;
+      contain: strict;
+      isolation: isolate;
     }
 
     .orb {
@@ -2939,11 +2941,13 @@
       height: 100vh !important;
       max-width: none !important;
       max-height: none !important;
-      transform: none !important;
+      transform: translateZ(0) !important;
       border-radius: 0 !important;
       overflow: hidden;
       z-index: 0 !important;
       pointer-events: none !important;
+      contain: strict;
+      isolation: isolate;
       opacity: 1;
       mix-blend-mode: screen;
       box-shadow: none;
@@ -4244,13 +4248,16 @@
 
     /* SCROLL — throttled via rAF & cached scrollHeight to prevent layout thrashing */
     const pbar = document.getElementById('pbar'), btt = document.getElementById('btt'), nav = document.getElementById('nav');
-    let ly = 0, scrollTicking = false;
+    let ly = 0, scrollTicking = false, isScrolling = false, scrollEndTimer = 0;
     let cachedScrollH = document.documentElement.scrollHeight - window.innerHeight;
     window.addEventListener('resize', () => {
       cachedScrollH = document.documentElement.scrollHeight - window.innerHeight;
     }, { passive: true });
 
     window.addEventListener('scroll', () => {
+      isScrolling = true;
+      clearTimeout(scrollEndTimer);
+      scrollEndTimer = setTimeout(() => { isScrolling = false; }, 120);
       if (!scrollTicking) {
         requestAnimationFrame(() => {
           const y = window.scrollY || window.pageYOffset;
@@ -4535,7 +4542,7 @@
       const BORDER_INTERVAL = 16; /* Allow 60fps for maximum smoothness */
       function loop(ts) {
         requestAnimationFrame(loop);
-        if (!borderActive) return;
+        if (!borderActive || isScrolling) return;
         const dt = Math.min(ts - last, 50);
         if (dt < BORDER_INTERVAL) return;
         last = ts;
@@ -5059,13 +5066,21 @@
       }
 
       /* ══════════════════════════════════════════════════
-         MAIN LOOP
+         MAIN LOOP — time-based so globe never slows during scroll
       ══════════════════════════════════════════════════ */
-      let lastDraw = 0, drawDt = 16;
+      let lastDraw = performance.now(), drawDt = 1, animSec = 0;
+      let neuralActive = true;
+      document.addEventListener('visibilitychange', () => { neuralActive = !document.hidden; });
+
       function draw(ts) {
         requestAnimationFrame(draw);
-        drawDt = Math.min(ts - lastDraw, 64);
-        lastDraw = ts;
+        if (!neuralActive) return;
+
+        const now = ts || performance.now();
+        const rawDt = Math.min(Math.max(now - lastDraw, 1), 50);
+        lastDraw = now;
+        drawDt = rawDt / 16.667;
+        animSec += rawDt / 1000;
         frame++;
         ctx.clearRect(0, 0, W, H);
         const isDark = document.documentElement.dataset.theme !== 'light';
@@ -5092,43 +5107,45 @@
            STATE: GLOBE — revolving neural mesh (clickable loop)
         ════════════════════════════════════════════ */
         if (STATE === 'globe') {
-          stateT++;
+          stateT += drawDt;
           const tiltX = ((mouseX - CX) / W) * .8;
           const tiltY = ((mouseY - CY) / H) * .5;
-          rotY += .0045 + Math.abs(tiltX) * .005;
+          rotY += (.0045 + Math.abs(tiltX) * .005) * drawDt;
           const rotX = tiltY * .5;
-          ringAngle += .01;
+          ringAngle += .01 * drawDt;
 
           gnodes.forEach(n => projectGlobeNode(n, rotY, rotX));
 
-          ctx.save();
-          for (let k = 0; k < 4; k++) {
-            const yy = (-0.55 + k * 0.35);
-            const rr = Math.sqrt(Math.max(0, 1 - yy * yy)) * GLOB_R;
-            const y2 = yy * Math.cos(rotX) * GLOB_R;
-            ctx.beginPath();
-            ctx.ellipse(CX, CY + y2, rr * 0.92, rr * 0.28 * (0.55 + 0.45 * Math.cos(rotX)), 0, 0, Math.PI * 2);
-            ctx.strokeStyle = hexA('#67e8f9', isDark ? 0.08 : 0.12);
-            ctx.lineWidth = 1; ctx.stroke();
+          if (!isScrolling) {
+            ctx.save();
+            for (let k = 0; k < 4; k++) {
+              const yy = (-0.55 + k * 0.35);
+              const rr = Math.sqrt(Math.max(0, 1 - yy * yy)) * GLOB_R;
+              const y2 = yy * Math.cos(rotX) * GLOB_R;
+              ctx.beginPath();
+              ctx.ellipse(CX, CY + y2, rr * 0.92, rr * 0.28 * (0.55 + 0.45 * Math.cos(rotX)), 0, 0, Math.PI * 2);
+              ctx.strokeStyle = hexA('#67e8f9', isDark ? 0.08 : 0.12);
+              ctx.lineWidth = 1; ctx.stroke();
+            }
+            ctx.restore();
           }
-          ctx.restore();
 
           gnodes.forEach((n, i) => {
             n.conn.forEach(j => {
               if (j <= i) return;
               const m = gnodes[j];
               const avgD = ((n.depth + m.depth) / 2 + 1) / 2;
-              const pulse = 0.55 + 0.45 * Math.sin(frame * 0.03 + i * 0.2);
+              const pulse = 0.55 + 0.45 * Math.sin(animSec * 1.8 + i * 0.2);
               ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(m.x, m.y);
               ctx.strokeStyle = isDark ? hexA(n.col, avgD * 0.22 * pulse) : hexA('#0369a1', avgD * 0.2);
               ctx.lineWidth = 0.75; ctx.stroke();
             });
           });
 
-          if (frame % 8 === 0) spawnGlobePacket();
+          if (frame % 8 === 0 && !isScrolling) spawnGlobePacket();
           globePackets = globePackets.filter(p => p.t <= 1);
           globePackets.forEach(p => {
-            p.t += p.speed;
+            p.t += p.speed * drawDt;
             const a = gnodes[p.from], b = gnodes[p.to];
             const px = lerp(a.x, b.x, p.t), py = lerp(a.y, b.y, p.t);
             const tx = lerp(a.x, b.x, Math.max(0, p.t - .14)), ty = lerp(a.y, b.y, Math.max(0, p.t - .14));
@@ -5141,19 +5158,22 @@
             ctx.beginPath(); ctx.arc(px, py, p.size * 3.2, 0, Math.PI * 2); ctx.fillStyle = hg; ctx.fill();
           });
 
-          [...gnodes].sort((a, b) => a.depth - b.depth).forEach(n => {
+          gnodes.sort((a, b) => a.depth - b.depth);
+          const glowScale = isScrolling ? 3.8 : 5.5;
+          gnodes.forEach(n => {
             const depthT = (n.depth + 1) / 2;
             const alpha = .18 + depthT * .82;
             const r = n.size * n.sc * (1 + depthT * .55);
-            const pulse = Math.sin(frame * 0.025 + n.po) * .35 + .7;
-            const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, r * 5.5 * pulse);
+            const pulse = Math.sin(animSec * 1.5 + n.po) * .35 + .7;
+            const glowR = r * glowScale * pulse;
+            const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowR);
             glow.addColorStop(0, hexA(n.col, alpha * .55)); glow.addColorStop(1, hexA(n.col, 0));
-            ctx.beginPath(); ctx.arc(n.x, n.y, r * 5.5 * pulse, 0, Math.PI * 2); ctx.fillStyle = glow; ctx.fill();
+            ctx.beginPath(); ctx.arc(n.x, n.y, glowR, 0, Math.PI * 2); ctx.fillStyle = glow; ctx.fill();
             ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, Math.PI * 2); ctx.fillStyle = hexA(n.col, alpha); ctx.fill();
             ctx.beginPath(); ctx.arc(n.x, n.y, r * 0.4, 0, Math.PI * 2); ctx.fillStyle = hexA('#f8fafc', alpha * 0.85); ctx.fill();
           });
 
-          drawHUD(1);
+          if (!isScrolling) drawHUD(1);
 
         }
 
@@ -5161,7 +5181,7 @@
            STATE: EXPLODING — soft ice constellation dissolve
         ════════════════════════════════════════════ */
         else if (STATE === 'exploding') {
-          stateT += drawDt / 16; /* time-based: ~1 unit per frame at 60fps */
+          stateT += drawDt;
 
           ctx.save();
           if (isDark) ctx.globalCompositeOperation = 'lighter';
@@ -5174,7 +5194,7 @@
           drawRadialBloom(CX, CY, stateT);
           drawStarburst(CX, CY, stateT);
 
-          const spf = drawDt / 16; /* scale per-frame physics by real dt */
+          const spf = drawDt; /* scale per-frame physics by real dt */
           shards.forEach(s => {
             s.trail.push({ x: s.x, y: s.y });
             if (s.trail.length > 8) s.trail.shift();
@@ -5256,11 +5276,11 @@
            STATE: REFORMING — mesh rebuilds (loop)
         ════════════════════════════════════════════ */
         else if (STATE === 'reforming') {
-          stateT++;
+          stateT += drawDt;
           const t = Math.min(1, stateT / 82);
           const et = easeOut(t);
           const tiltY = ((mouseY - CY) / H) * .25;
-          rotY += .004;
+          rotY += .004 * drawDt;
           const rotX = tiltY * .35;
 
           if (isDark) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; }
@@ -5313,7 +5333,7 @@
            STATE: SCATTERING  (nodes fly to net positions)
         ════════════════════════════════════════════ */
         else if (STATE === 'scattering') {
-          stateT++;
+          stateT += drawDt;
           const globalT = stateT / 92;
           let allDone = true;
 
@@ -5364,7 +5384,7 @@
            STATE: NET  (persistent neural background)
         ════════════════════════════════════════════ */
         else if (STATE === 'net') {
-          stateT++;
+          stateT += drawDt;
 
           /* stay as roaming net ~3.5s (+0.5s), then rebuild globe */
           if (stateT > 210) {
@@ -5379,19 +5399,19 @@
 
           /* drift nodes */
           netNodes.forEach(n => {
-            n.vx += (Math.random() - .5) * .06;
-            n.vy += (Math.random() - .5) * .06;
-            n.vx += (n.ox - n.x) * .008; /* soft spring */
-            n.vy += (n.oy - n.y) * .008;
-            n.vx *= .88; n.vy *= .88;
-            n.x += n.vx; n.y += n.vy;
+            n.vx += (Math.random() - .5) * .06 * drawDt;
+            n.vy += (Math.random() - .5) * .06 * drawDt;
+            n.vx += (n.ox - n.x) * .008 * drawDt; /* soft spring */
+            n.vy += (n.oy - n.y) * .008 * drawDt;
+            n.vx *= Math.pow(.88, drawDt); n.vy *= Math.pow(.88, drawDt);
+            n.x += n.vx * drawDt; n.y += n.vy * drawDt;
             /* mouse repulsion */
             const dx = n.x - mouseX, dy = n.y - mouseY, dist = Math.hypot(dx, dy);
             if (dist < 110) {
               const f = (110 - dist) / 110 * 2.5;
               n.vx += dx / dist * f; n.vy += dy / dist * f;
             }
-            n.pulse += .022;
+            n.pulse += .022 * drawDt;
             if (n.active) { n.activeFade = Math.max(0, n.activeFade - .012); if (!n.activeFade) n.active = false; }
           });
 
@@ -5410,10 +5430,10 @@
           }
 
           /* net packets */
-          if (frame % 16 === 0) spawnNetPacket();
+          if (frame % 16 === 0 && !isScrolling) spawnNetPacket();
           netPackets = netPackets.filter(p => p.t <= 1);
           netPackets.forEach(p => {
-            p.t += p.speed;
+            p.t += p.speed * drawDt;
             const a = netNodes[p.from], b = netNodes[p.to];
             const px = lerp(a.x, b.x, p.t), py = lerp(a.y, b.y, p.t);
             const tx = lerp(a.x, b.x, Math.max(0, p.t - .18)), ty = lerp(a.y, b.y, Math.max(0, p.t - .18));
@@ -5443,7 +5463,7 @@
           });
         }
       }
-      draw();
+      requestAnimationFrame(draw);
     })();
 
 
