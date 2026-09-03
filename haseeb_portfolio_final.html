@@ -234,7 +234,7 @@
       font-size: .8rem;
       color: var(--cyan);
       letter-spacing: .04em;
-      z-index: 9000;
+      z-index: 10001;
       opacity: 0;
       transition: opacity .3s, transform .3s;
       pointer-events: none;
@@ -1950,6 +1950,359 @@
       background: var(--green);
       box-shadow: 0 0 10px var(--green);
       animation: pdotAnim 2s infinite;
+    }
+
+    /* EMAIL MODAL */
+    .em-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s ease;
+    }
+
+    .em-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .em-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(3, 10, 24, 0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    html[data-theme="light"] .em-backdrop {
+      background: rgba(15, 23, 42, 0.48);
+    }
+
+    .em-card {
+      position: relative;
+      width: 100%;
+      max-width: 490px;
+      background: var(--surface);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      border-radius: 20px;
+      padding: 28px 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 40px rgba(56, 189, 248, 0.14);
+      transform: translateY(22px) scale(0.96);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 2;
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+
+    .em-overlay.open .em-card {
+      transform: translateY(0) scale(1);
+    }
+
+    html[data-theme="light"] .em-card {
+      background: #ffffff;
+      border-color: rgba(15, 23, 42, 0.16);
+      box-shadow: 0 25px 60px rgba(15, 23, 42, 0.18);
+    }
+
+    .em-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--muted2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .em-close:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.12);
+      transform: rotate(90deg);
+    }
+
+    html[data-theme="light"] .em-close {
+      background: rgba(15, 23, 42, 0.05);
+    }
+
+    html[data-theme="light"] .em-close:hover {
+      background: rgba(15, 23, 42, 0.1);
+    }
+
+    .em-header {
+      margin-bottom: 18px;
+      padding-right: 30px;
+    }
+
+    .em-badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .em-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 5px;
+      line-height: 1.2;
+    }
+
+    .em-subtitle {
+      font-size: 0.84rem;
+      color: var(--muted2);
+      line-height: 1.5;
+    }
+
+    .em-copy-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 12px;
+      margin-bottom: 18px;
+    }
+
+    html[data-theme="light"] .em-copy-box {
+      background: rgba(15, 23, 42, 0.03);
+    }
+
+    .em-email-text {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--cyan);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .em-copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: rgba(56, 189, 248, 0.09);
+      color: var(--cyan);
+      font-family: 'Sora', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .em-copy-btn:hover {
+      background: rgba(56, 189, 248, 0.18);
+      transform: translateY(-1px);
+    }
+
+    .em-copy-btn.copied {
+      border-color: rgba(52, 211, 153, 0.5);
+      background: rgba(52, 211, 153, 0.15);
+      color: #34d399;
+    }
+
+    .em-clients-lbl,
+    .em-composer-lbl {
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted2);
+      margin-bottom: 8px;
+    }
+
+    .em-clients-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 440px) {
+      .em-clients-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .em-client-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 11px 8px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      font-family: 'Sora', sans-serif;
+    }
+
+    .em-client-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .em-gmail {
+      border-color: rgba(234, 67, 53, 0.35);
+      color: #f87171;
+      background: rgba(234, 67, 53, 0.08);
+    }
+
+    .em-gmail:hover {
+      background: rgba(234, 67, 53, 0.16);
+      box-shadow: 0 6px 18px rgba(234, 67, 53, 0.2);
+    }
+
+    .em-outlook {
+      border-color: rgba(14, 165, 233, 0.35);
+      color: #38bdf8;
+      background: rgba(14, 165, 233, 0.08);
+    }
+
+    .em-outlook:hover {
+      background: rgba(14, 165, 233, 0.16);
+      box-shadow: 0 6px 18px rgba(14, 165, 233, 0.2);
+    }
+
+    .em-default {
+      border-color: rgba(165, 180, 252, 0.35);
+      color: var(--purple);
+      background: rgba(165, 180, 252, 0.08);
+    }
+
+    .em-default:hover {
+      background: rgba(165, 180, 252, 0.16);
+      box-shadow: 0 6px 18px rgba(165, 180, 252, 0.2);
+    }
+
+    .em-composer {
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    .em-field {
+      margin-bottom: 9px;
+    }
+
+    .em-field input,
+    .em-field textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 12px;
+      color: var(--text);
+      font-family: 'Sora', sans-serif;
+      font-size: 0.82rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    html[data-theme="light"] .em-field input,
+    html[data-theme="light"] .em-field textarea {
+      background: #f8fafc;
+      border-color: rgba(15, 23, 42, 0.15);
+      color: #0f172a;
+    }
+
+    .em-field input:focus,
+    .em-field textarea:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    }
+
+    .em-field textarea {
+      resize: vertical;
+      min-height: 72px;
+    }
+
+    .em-composer-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 480px) {
+      .em-composer-actions {
+        flex-direction: column;
+      }
+    }
+
+    .em-btn-send {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-family: 'Sora', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .em-btn-primary {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+    }
+
+    .em-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(37, 99, 235, 0.45);
+    }
+
+    .em-btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .em-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    html[data-theme="light"] .em-btn-secondary {
+      background: rgba(15, 23, 42, 0.05);
+    }
+
+    html[data-theme="light"] .em-btn-secondary:hover {
+      background: rgba(15, 23, 42, 0.1);
     }
 
     /* FOOTER */
@@ -4134,8 +4487,8 @@
       <p class="ct-sub">Open to internships, freelance projects, and collaborations in AI automation, ML engineering,
         and intelligent systems.</p>
       <div class="ct-grid">
-        <!-- FIXED: proper mailto href, no conflicting onclick -->
-        <a href="mailto:haseebarif.ha7@gmail.com" class="ct-btn ct-email">
+        <!-- Interactive Email Button & Direct Connect Modal Trigger -->
+        <a href="mailto:haseebarif.ha7@gmail.com" class="ct-btn ct-email" id="emailTriggerBtn" onclick="openEmailModal(event)">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="2" y="4" width="20" height="16" rx="2" />
             <polyline points="2,4 12,13 22,4" />
@@ -4175,9 +4528,95 @@
       <a href="https://github.com/haseebarif11" target="_blank">GitHub</a>
       <a href="https://huggingface.co/HaseebArif11" target="_blank">Hugging Face</a>
       <a href="https://www.linkedin.com/in/haseebarif11" target="_blank">LinkedIn</a>
-      <a href="mailto:haseebarif.ha7@gmail.com">Email</a>
+      <a href="mailto:haseebarif.ha7@gmail.com" onclick="openEmailModal(event)">Email</a>
     </div>
   </footer>
+
+  <!-- EMAIL MODAL -->
+  <div id="emailModal" class="em-overlay" aria-hidden="true">
+    <div class="em-backdrop" onclick="closeEmailModal()"></div>
+    <div class="em-card" role="dialog" aria-labelledby="emTitle" aria-modal="true">
+      <button class="em-close" onclick="closeEmailModal()" aria-label="Close modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="em-header">
+        <span class="em-badge">DIRECT CONNECT</span>
+        <h3 id="emTitle" class="em-title">Send Haseeb an Email</h3>
+        <p class="em-subtitle">Reach out directly via your favorite service or copy the address below.</p>
+      </div>
+
+      <!-- Quick Copy Bar -->
+      <div class="em-copy-box">
+        <div class="em-email-text">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <polyline points="2,4 12,13 22,4"/>
+          </svg>
+          <span>haseebarif.ha7@gmail.com</span>
+        </div>
+        <button type="button" id="emCopyBtn" class="em-copy-btn" onclick="copyEmailAddress()" title="Copy email address to clipboard">
+          <svg id="emCopyIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span id="emCopyText">Copy</span>
+        </button>
+      </div>
+
+      <!-- Direct Client Launchers -->
+      <div class="em-clients-lbl">Open directly in:</div>
+      <div class="em-clients-grid">
+        <button type="button" class="em-client-btn em-gmail" onclick="sendWithClient('gmail')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/>
+          </svg>
+          <span>Gmail</span>
+        </button>
+        <button type="button" class="em-client-btn em-outlook" onclick="sendWithClient('outlook')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M7.88 12.04q0 .45-.11.87-.1.41-.33.74-.22.33-.58.52-.35.18-.86.18-.5 0-.87-.19-.36-.19-.58-.52-.22-.34-.33-.75-.1-.42-.1-.85 0-.44.1-.85.11-.42.33-.75.23-.33.59-.51.37-.18.87-.18.5 0 .86.18.36.18.58.51.23.33.33.75.11.41.11.85zm-4.73 0q0 .71.28 1.29.28.58.79.92.51.33 1.2.33.7 0 1.21-.33.51-.34.79-.92.28-.58.28-1.29 0-.71-.28-1.29-.28-.58-.79-.91-.51-.34-1.21-.34-.69 0-1.2.34-.51.33-.79.91-.28.58-.28 1.29zM24 12v9.5a1.5 1.5 0 0 1-1.5 1.5H11.5v-11H24zm-12.5-9.5v8.5H0V4A1.5 1.5 0 0 1 1.5 2.5H11.5zm11 0A1.5 1.5 0 0 1 24 4v7H12.5V2.5h10z"/>
+          </svg>
+          <span>Outlook</span>
+        </button>
+        <button type="button" class="em-client-btn em-default" onclick="sendWithClient('default')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <polyline points="2,4 12,13 22,4"/>
+          </svg>
+          <span>Mail App</span>
+        </button>
+      </div>
+
+      <!-- Quick Message Drafter -->
+      <div class="em-composer">
+        <div class="em-composer-lbl">Or draft your message:</div>
+        <div class="em-field">
+          <input type="text" id="emSubject" placeholder="Subject (e.g., AI Collaboration / Project Inquiry)" spellcheck="false" />
+        </div>
+        <div class="em-field">
+          <textarea id="emBody" rows="3" placeholder="Write your message here..."></textarea>
+        </div>
+        <div class="em-composer-actions">
+          <button type="button" class="em-btn-send em-btn-primary" onclick="sendWithClient('gmail')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/>
+            </svg>
+            Send with Gmail
+          </button>
+          <button type="button" class="em-btn-send em-btn-secondary" onclick="sendWithClient('default')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+            </svg>
+            Send with Mail App
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
     /* THREE.JS */
@@ -5488,6 +5927,107 @@
       }, { threshold: 0.1 });
       labels.forEach(el => obs.observe(el));
     })();
+
+    /* ═══════════════════════════════════════════════════════
+       EMAIL MODAL & SMART CLIENT LAUNCHER
+    ═══════════════════════════════════════════════════════ */
+    const EMAIL_ADDR = 'haseebarif.ha7@gmail.com';
+
+    function openEmailModal(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      const modal = document.getElementById('emailModal');
+      if (!modal) return;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+
+      setTimeout(() => {
+        const sub = document.getElementById('emSubject');
+        if (sub) sub.focus();
+      }, 100);
+    }
+
+    function closeEmailModal() {
+      const modal = document.getElementById('emailModal');
+      if (!modal) return;
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function copyEmailAddress() {
+      const copyBtn = document.getElementById('emCopyBtn');
+      const copyText = document.getElementById('emCopyText');
+
+      function onSuccess() {
+        if (copyText) copyText.textContent = 'Copied!';
+        if (copyBtn) copyBtn.classList.add('copied');
+        if (window.showToast) window.showToast('Email address copied to clipboard!');
+        setTimeout(() => {
+          if (copyText) copyText.textContent = 'Copy';
+          if (copyBtn) copyBtn.classList.remove('copied');
+        }, 2200);
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(EMAIL_ADDR).then(onSuccess).catch(() => {
+          fallbackCopy(EMAIL_ADDR, onSuccess);
+        });
+      } else {
+        fallbackCopy(EMAIL_ADDR, onSuccess);
+      }
+    }
+
+    function fallbackCopy(text, cb) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        if (cb) cb();
+      } catch (err) {
+        window.prompt('Copy email address:', text);
+      }
+      document.body.removeChild(ta);
+    }
+
+    function sendWithClient(client) {
+      const subject = (document.getElementById('emSubject')?.value || '').trim() || 'Inquiry from Portfolio';
+      const body = (document.getElementById('emBody')?.value || '').trim();
+
+      const encSubject = encodeURIComponent(subject);
+      const encBody = encodeURIComponent(body);
+
+      if (client === 'gmail') {
+        const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL_ADDR}&su=${encSubject}&body=${encBody}`;
+        window.open(url, '_blank', 'noopener,noreferrer');
+      } else if (client === 'outlook') {
+        const url = `https://outlook.live.com/mail/0/deeplink/compose?to=${EMAIL_ADDR}&subject=${encSubject}&body=${encBody}`;
+        window.open(url, '_blank', 'noopener,noreferrer');
+      } else {
+        const mailto = `mailto:${EMAIL_ADDR}?subject=${encSubject}&body=${encBody}`;
+        window.location.href = mailto;
+      }
+    }
+
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeEmailModal();
+    });
+
+    document.querySelectorAll('.ct-email, a[href^="mailto:haseebarif"]').forEach(btn => {
+      btn.addEventListener('click', openEmailModal);
+    });
+
+    window.openEmailModal = openEmailModal;
+    window.closeEmailModal = closeEmailModal;
+    window.copyEmailAddress = copyEmailAddress;
+    window.sendWithClient = sendWithClient;
 
   </script>
 </body>
