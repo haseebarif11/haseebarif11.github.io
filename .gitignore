@@ -1,2 +1,10 @@
 .agents/
 *.docx
+haseeb_portfolio_final.html
+
+# OS and Editor files
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
