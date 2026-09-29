@@ -1,0 +1,61 @@
+name: Portfolio CI & Quality Checks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate HTML Structure & Integrity
+        run: |
+          python -c "
+          from html.parser import HTMLParser
+          import sys
+
+          class Validator(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.tags = []
+              def handle_starttag(self, tag, attrs):
+                  if tag not in ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr']:
+                      self.tags.append(tag)
+              def handle_endtag(self, tag):
+                  if tag in ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr']:
+                      return
+                  if self.tags and self.tags[-1] == tag:
+                      self.tags.pop()
+
+          with open('index.html', 'r', encoding='utf-8') as f:
+              code = f.read()
+
+          v = Validator()
+          v.feed(code)
+          if v.tags:
+              print('HTML Error: unclosed tags:', v.tags)
+              sys.exit(1)
+          print('HTML validation passed successfully!')
+          "
+
+      - name: Verify Key Assets
+        run: |
+          python -c "
+          import os, sys
+          required_files = ['index.html', 'README.md', 'robots.txt', 'sitemap.xml', 'Haseeb_Arif_CV.pdf', 'profile.png', 'background.png']
+          missing = [f for f in required_files if not os.path.exists(f)]
+          if missing:
+              print('Missing critical files:', missing)
+              sys.exit(1)
+          print('All critical portfolio assets verified!')
+          "
