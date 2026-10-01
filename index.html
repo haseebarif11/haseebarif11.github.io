@@ -3551,6 +3551,67 @@
         max-width: 100%;
       }
     }
+  
+    /* Project Filter Buttons & Counter Badge */
+    .proj-count-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--cyan);
+      background: rgba(103,232,249,0.1);
+      border: 1px solid rgba(103,232,249,0.3);
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-left: 8px;
+      vertical-align: middle;
+      letter-spacing: normal;
+      text-transform: none;
+    }
+    .pf-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      background: rgba(10,18,40,0.6);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      color: var(--muted2);
+      font-family: 'Sora', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      user-select: none;
+    }
+    .pf-btn:hover {
+      color: var(--text);
+      border-color: rgba(103,232,249,0.4);
+      background: rgba(103,232,249,0.06);
+    }
+    .pf-btn.active {
+      color: #030c1a;
+      background: linear-gradient(135deg, var(--cyan), #38bdf8);
+      border-color: transparent;
+      font-weight: 600;
+      box-shadow: 0 4px 16px rgba(103,232,249,0.25);
+    }
+    .pf-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      background: rgba(255,255,255,0.15);
+      padding: 1px 7px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+    .pf-btn.active .pf-count {
+      background: rgba(0,0,0,0.18);
+      color: #030c1a;
+    }
+    .urdukit-pip-bar:hover {
+      border-color: var(--cyan) !important;
+      background: rgba(6,182,212,0.12) !important;
+    }
+    
   </style>
 </head>
 
@@ -3635,6 +3696,7 @@
         <span class="bdg bp">AI Agents</span>
         <span class="bdg ba">Python / ML</span>
         <span class="bdg bg2">NLP / Transformers</span>
+        <span class="bdg bc" style="border-color:rgba(103,232,249,0.5);background:rgba(103,232,249,0.12);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>UrduKit (PyPI Author)</span>
         <span class="bdg bg2">OpenRouter / LLMs</span>
         <span class="bdg bpk">CGPA 3.37 / 4.00</span>
       </div>
@@ -3923,13 +3985,33 @@
   <section id="projects" style="padding-top:0;">
     <div class="sec-hd">
       <span class="amb-label">Builds</span>
-      <div class="sec-lbl">Projects</div>
+      <div class="sec-lbl">Projects <span class="proj-count-badge" id="proj-live-count">15 Projects</span></div>
       <h2 class="sec-ttl rv">Things I've <span class="shine-word">Built</span></h2>
+      <p style="color:var(--muted2);max-width:640px;margin:8px auto 0;font-size:0.95rem;text-align:center;">Production AI agents, published PyPI NLP middleware, computer vision models, and end-to-end machine learning workflows.</p>
+    </div>
+
+    <!-- PROJECT CATEGORY FILTER & REAL-TIME COUNTERS -->
+    <div class="proj-filter-wrap rv" style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:28px auto 24px;max-width:860px;padding:0 16px;">
+      <button class="pf-btn active" data-filter="all" onclick="filterProjects('all', this)">
+        <span>All</span> <span class="pf-count">15</span>
+      </button>
+      <button class="pf-btn" data-filter="agents" onclick="filterProjects('agents', this)">
+        <span>AI Agents & Workflows</span> <span class="pf-count">4</span>
+      </button>
+      <button class="pf-btn" data-filter="nlp" onclick="filterProjects('nlp', this)">
+        <span>NLP & Middleware</span> <span class="pf-count">5</span>
+      </button>
+      <button class="pf-btn" data-filter="cv" onclick="filterProjects('cv', this)">
+        <span>Computer Vision</span> <span class="pf-count">2</span>
+      </button>
+      <button class="pf-btn" data-filter="ml" onclick="filterProjects('ml', this)">
+        <span>ML & Analytics</span> <span class="pf-count">4</span>
+      </button>
     </div>
     <div class="proj-grid">
 
       <!-- 01 Featured -->
-      <a class="proj-card-link rv" href="https://github.com/haseebarif11/jira-slack-n8n-workflows" target="_blank"
+      <a class="proj-card-link rv" data-cat="agents" href="https://github.com/haseebarif11/jira-slack-n8n-workflows" target="_blank"
         rel="noopener">
         <div class="proj-card" style="--pc:var(--cyan);">
           <div class="proj-top"><span class="proj-num">01 — Featured</span>
@@ -3958,7 +4040,7 @@
       </a>
 
       <!-- 02 ReviewBot (NEW) -->
-      <a class="proj-card-link rv" href="https://github.com/haseebarif11/ReviewBot" target="_blank" rel="noopener">
+      <a class="proj-card-link rv" data-cat="agents" href="https://github.com/haseebarif11/ReviewBot" target="_blank" rel="noopener">
         <div class="proj-card" style="--pc:var(--purple);">
           <div class="proj-top"><span class="proj-num">02</span>
             <div class="proj-ico"
@@ -3990,7 +4072,7 @@
       </a>
 
       <!-- 03 Research-Pilot (NEW) -->
-      <a class="proj-card-link rv" href="https://github.com/haseebarif11/Research-Pilot" target="_blank" rel="noopener">
+      <a class="proj-card-link rv" data-cat="agents" href="https://github.com/haseebarif11/Research-Pilot" target="_blank" rel="noopener">
         <div class="proj-card" style="--pc:var(--amber);">
           <div class="proj-top"><span class="proj-num">03</span>
             <div class="proj-ico"
@@ -4020,7 +4102,7 @@
       </a>
 
       <!-- 04 UrduKit — NLP Middleware Toolkit (PyPI) -->
-      <a class="proj-card-link rv" href="https://github.com/haseebarif11/Urdu-Kit" target="_blank" rel="noopener">
+      <a class="proj-card-link rv" data-cat="nlp" href="https://github.com/haseebarif11/Urdu-Kit" target="_blank" rel="noopener">
         <div class="proj-card" style="--pc:var(--cyan);">
           <div class="proj-top"><span class="proj-num">04</span>
             <div class="proj-ico"
@@ -4055,7 +4137,7 @@
       </a>
 
       <!-- 05 Desk Review -->
-      <a class="proj-card-link rv" href="https://github.com/haseebarif11/desk-review" target="_blank" rel="noopener">
+      <a class="proj-card-link rv" data-cat="nlp" href="https://github.com/haseebarif11/desk-review" target="_blank" rel="noopener">
         <div class="proj-card" style="--pc:var(--pink);">
           <div class="proj-top"><span class="proj-num">05</span>
             <div class="proj-ico"
@@ -4088,7 +4170,7 @@
       </a>
 
       <!-- 06 Deepfake Face Detection -->
-      <a class="proj-card-link rv" href="https://github.com/haseebarif11/Deep-fake-face-detection" target="_blank"
+      <a class="proj-card-link rv" data-cat="cv" href="https://github.com/haseebarif11/Deep-fake-face-detection" target="_blank"
         rel="noopener">
         <div class="proj-card" style="--pc:var(--green);">
           <div class="proj-top"><span class="proj-num">06</span>
@@ -4121,7 +4203,7 @@
 
       <!-- HIDDEN PROJECTS (Show More) -->
       <!-- 07 OSPilot Agent -->
-      <a class="proj-card-link rv hidden-proj" href="https://github.com/haseebarif11/ospilot-agent" target="_blank"
+      <a class="proj-card-link rv hidden-proj" data-cat="agents" href="https://github.com/haseebarif11/ospilot-agent" target="_blank"
         rel="noopener" style="display:none;">
         <div class="proj-card" style="--pc:var(--cyan);">
           <div class="proj-top"><span class="proj-num">07</span>
@@ -4152,7 +4234,7 @@
       </a>
 
       <!-- 08 Family Chatbot — Neo4j -->
-      <a class="proj-card-link rv hidden-proj" href="https://github.com/haseebarif11/family-chatbot-neo4j" target="_blank"
+      <a class="proj-card-link rv hidden-proj" data-cat="ml" href="https://github.com/haseebarif11/family-chatbot-neo4j" target="_blank"
         rel="noopener" style="display:none;">
         <div class="proj-card" style="--pc:var(--purple);">
           <div class="proj-top"><span class="proj-num">08</span>
@@ -4187,7 +4269,7 @@
       </a>
 
       <!-- 09 Human Activity Recognition -->
-      <a class="proj-card-link rv hidden-proj" href="https://github.com/haseebarif11/Human-Activity-Recognition" target="_blank"
+      <a class="proj-card-link rv hidden-proj" data-cat="cv" href="https://github.com/haseebarif11/Human-Activity-Recognition" target="_blank"
         rel="noopener" style="display:none;">
         <div class="proj-card" style="--pc:var(--cyan);">
           <div class="proj-top"><span class="proj-num">09</span>
@@ -4217,7 +4299,7 @@
       </a>
 
       <!-- 10 Tech Stack Recommender -->
-      <a class="proj-card-link rv hidden-proj" href="https://github.com/haseebarif11/Tech-Stack-Recommender"
+      <a class="proj-card-link rv hidden-proj" data-cat="nlp" href="https://github.com/haseebarif11/Tech-Stack-Recommender"
         target="_blank" rel="noopener" style="display:none;">
         <div class="proj-card" style="--pc:var(--amber);">
           <div class="proj-top"><span class="proj-num">10</span>
@@ -4249,7 +4331,7 @@
       </a>
 
       <!-- 11 AI Customer Support Bot & n8n Suite -->
-      <a class="proj-card-link rv hidden-proj" href="https://github.com/haseebarif11/n8n-practice" target="_blank"
+      <a class="proj-card-link rv hidden-proj" data-cat="agents" href="https://github.com/haseebarif11/n8n-practice" target="_blank"
         rel="noopener" style="display:none;">
         <div class="proj-card" style="--pc:var(--pink);">
           <div class="proj-top"><span class="proj-num">11</span>
@@ -4283,7 +4365,7 @@
       </a>
 
       <!-- 12 Fake News & Misinformation Detection -->
-      <a class="proj-card-link rv hidden-proj" href="https://github.com/haseebarif11/fake-news-detection-pipeline"
+      <a class="proj-card-link rv hidden-proj" data-cat="nlp" href="https://github.com/haseebarif11/fake-news-detection-pipeline"
         target="_blank" rel="noopener" style="display:none;">
         <div class="proj-card" style="--pc:var(--purple);">
           <div class="proj-top"><span class="proj-num">12</span>
@@ -4313,7 +4395,7 @@
       </a>
 
       <!-- 13 Family Tree Chatbot (Prolog & AIML) -->
-      <a class="proj-card-link rv hidden-proj" href="https://github.com/haseebarif11/family-tree-chatbot" target="_blank"
+      <a class="proj-card-link rv hidden-proj" data-cat="nlp" href="https://github.com/haseebarif11/family-tree-chatbot" target="_blank"
         rel="noopener" style="display:none;">
         <div class="proj-card" style="--pc:var(--amber);">
           <div class="proj-top"><span class="proj-num">13</span>
@@ -4346,7 +4428,7 @@
       </a>
 
       <!-- 14 Iris Species Classifier -->
-      <a class="proj-card-link rv hidden-proj" href="https://github.com/haseebarif11/Iris-Species-Classifier"
+      <a class="proj-card-link rv hidden-proj" data-cat="ml" href="https://github.com/haseebarif11/Iris-Species-Classifier"
         target="_blank" rel="noopener" style="display:none;">
         <div class="proj-card" style="--pc:var(--green);">
           <div class="proj-top"><span class="proj-num">14</span>
@@ -4735,6 +4817,55 @@
 
 
 
+    <!-- GITHUB CONTRIBUTIONS & METRICS COUNTER -->
+  <section id="github-activity" style="padding-top:0;">
+    <div class="sec-hd">
+      <span class="amb-label">Activity</span>
+      <div class="sec-lbl">Open Source & Contributions</div>
+      <h2 class="sec-ttl rv">GitHub &amp; <span class="shine-word">Contributions</span></h2>
+      <p style="color:var(--muted2);max-width:600px;margin:8px auto 0;font-size:0.95rem;text-align:center;">Continuous learning and shipping production code, open-source libraries, and AI pipelines.</p>
+    </div>
+    <div class="gh-stats-card rv" style="max-width:980px;margin:30px auto 0;background:var(--cardGrad);border:1px solid var(--border);border-radius:20px;padding:32px 28px;box-shadow:0 20px 40px rgba(0,0,10,0.35);">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:18px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:48px;height:48px;border-radius:50%;background:rgba(59,130,246,0.12);display:flex;align-items:center;justify-content:center;border:1px solid rgba(59,130,246,0.3);color:var(--cyan);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          </div>
+          <div>
+            <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.15rem;color:var(--text);">Haseeb Arif (@haseebarif11)</div>
+            <div style="font-size:0.82rem;color:var(--cyan);display:flex;align-items:center;gap:6px;margin-top:2px;">
+              <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10b981;animation:pulse 2s infinite;"></span>
+              Active Profile &amp; Open Source Contributor
+            </div>
+          </div>
+        </div>
+        <a href="https://github.com/haseebarif11" target="_blank" rel="noopener" class="btn-g" style="padding:8px 18px;font-size:0.85rem;border-radius:10px;">
+          View GitHub Profile →
+        </a>
+      </div>
+      
+      <!-- Counter Stats Row -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;">
+        <div class="stat-c" style="background:rgba(3,12,26,0.6);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:700;color:var(--cyan);" id="gh-repo-count">15+</div>
+          <div style="font-size:0.75rem;letter-spacing:0.08em;color:var(--muted2);text-transform:uppercase;margin-top:4px;">Public Repositories</div>
+        </div>
+        <div class="stat-c" style="background:rgba(3,12,26,0.6);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:700;color:var(--purple);" id="gh-proj-count">15</div>
+          <div style="font-size:0.75rem;letter-spacing:0.08em;color:var(--muted2);text-transform:uppercase;margin-top:4px;">Portfolio Builds</div>
+        </div>
+        <div class="stat-c" style="background:rgba(3,12,26,0.6);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:700;color:#34d399;" id="gh-pypi-count">1</div>
+          <div style="font-size:0.75rem;letter-spacing:0.08em;color:var(--muted2);text-transform:uppercase;margin-top:4px;">PyPI Package (UrduKit)</div>
+        </div>
+        <div class="stat-c" style="background:rgba(3,12,26,0.6);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:700;color:var(--amber);" id="gh-commit-count">100+</div>
+          <div style="font-size:0.75rem;letter-spacing:0.08em;color:var(--muted2);text-transform:uppercase;margin-top:4px;">Git Contributions</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- CONTACT -->
   <section id="contact" style="padding-top:0;">
     <div class="sec-hd">
@@ -5011,7 +5142,7 @@
     /* TYPING */
     const typed = document.getElementById('typed');
     if (typed) {
-      const words = ['AI Agents', 'n8n Automation', 'ML Pipelines', 'NLP Pipelines', 'LLM Integration', 'Webhook Systems', 'Computer Vision'];
+      const words = ['UrduKit NLP Middleware', 'AI Agents', 'n8n Automation', 'Local Agentic RAG', 'ML Pipelines', 'NLP Transformers', 'LLM Webhooks', 'Computer Vision'];
       let wi = 0, ci = 0, del = false;
       function type() { const w = words[wi]; typed.textContent = del ? w.slice(0, --ci) : w.slice(0, ++ci); if (!del && ci === w.length) { setTimeout(() => { del = true; setTimeout(type, 80); }, 1600); return; } if (del && ci === 0) { del = false; wi = (wi + 1) % words.length; } setTimeout(type, del ? 52 : 88); }
       setTimeout(type, 1800);
@@ -6301,6 +6432,79 @@
     window.copyEmailAddress = copyEmailAddress;
     window.sendWithClient = sendWithClient;
 
+  
+    /* PROJECT FILTERING & DYNAMIC COUNTER */
+    window.filterProjects = function(category, btn) {
+      document.querySelectorAll('.pf-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      
+      const cards = document.querySelectorAll('.proj-card-link');
+      const toggleBtn = document.getElementById('proj-toggle-btn');
+      const countEl = document.getElementById('proj-live-count');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const cat = card.getAttribute('data-cat') || 'agents';
+        const isMatch = (category === 'all' || cat === category);
+        
+        if (category !== 'all') {
+          // In filtered mode, show matching regardless of hidden-proj
+          if (isMatch) {
+            card.style.display = 'flex';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        } else {
+          // In 'all' mode, respect hidden-proj state
+          const isHiddenByDefault = card.classList.contains('hidden-proj');
+          const isExpanded = toggleBtn && toggleBtn.innerHTML.includes('Less');
+          if (!isHiddenByDefault || isExpanded) {
+            card.style.display = 'flex';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        }
+      });
+
+      if (toggleBtn) {
+        toggleBtn.style.display = (category === 'all') ? 'inline-block' : 'none';
+      }
+
+      if (countEl) {
+        countEl.textContent = visibleCount + ' Projects';
+      }
+    };
+
+    /* COPY URDUKIT PIP COMMAND */
+    window.copyUrduPip = function(el) {
+      const cmd = 'pip install urdukit';
+      navigator.clipboard.writeText(cmd).then(() => {
+        if (typeof showToast === 'function') {
+          showToast('Copied: ' + cmd + ' 🚀');
+        }
+        const badge = el.querySelector('.pip-copy-badge');
+        if (badge) {
+          const orig = badge.textContent;
+          badge.textContent = 'Copied! ✓';
+          badge.style.background = '#10b981';
+          badge.style.color = '#fff';
+          setTimeout(() => {
+            badge.textContent = orig;
+            badge.style.background = '';
+            badge.style.color = '';
+          }, 2000);
+        }
+      }).catch(() => {
+        if (typeof showToast === 'function') showToast('Command: ' + cmd);
+      });
+    };
+    
   </script>
 </body>
 
