@@ -10,6 +10,40 @@
 
 ---
 
+## 📊 Projects Overview & Category Counters
+
+| Category | Projects Count | Key Technologies |
+|---|:---:|---|
+| 🤖 **Autonomous AI Agents & Workflows** | **4** | `n8n` `FastAPI` `LangGraph` `Gemini 2.5` `Claude 3.5` `Ollama` |
+| 💬 **NLP, Transformers & Middleware** | **5** | `PyPI: urdukit` `Sentence-Transformers` `BERT` `Gemini API` |
+| 👁️ **Computer Vision & Forensic AI** | **2** | `PyTorch` `EfficientNetB3` `MTCNN` `MediaPipe` `OpenCV` |
+| 📊 **ML Analytics & Knowledge Graphs** | **4** | `Neo4j` `Cypher` `Scikit-Learn` `Pandas` `TF-IDF` |
+| **Total Active Builds** | **15+** | *All open-source on GitHub* |
+
+---
+
+## 📦 Featured Open Source: UrduKit [![PyPI version](https://img.shields.io/pypi/v/urdukit.svg?color=0ea5e9&style=flat-square)](https://pypi.org/project/urdukit/)
+
+[**UrduKit**](https://github.com/haseebarif11/Urdu-Kit) is a published Python NLP middleware library designed for Roman Urdu, standard Urdu Script, and bilingual code-switched text.
+
+```bash
+pip install urdukit
+```
+
+```python
+import urdukit as uk
+
+# Normalize noisy Roman Urdu spellings
+clean = uk.normalize("ye boht hi acha project hai")
+print(clean)  # "yeh bohat hi achha project hai"
+
+# Script classification & multilingual RAG tokenization
+script = uk.detect_script("بہت شکریہ")
+print(script)  # "urdu_arabic"
+```
+
+---
+
 ## 🌟 Key Highlights & Featured Projects
 
 | # | Project | Tech Stack | Highlights & Description |
