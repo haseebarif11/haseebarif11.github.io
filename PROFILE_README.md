@@ -89,6 +89,24 @@ Tools:        Git, Linux, Docker, VS Code, Kaggle
 
 ---
 
+### 📜 Professional Licenses & Certifications (11 Credentials)
+
+| Certification | Organization | Credential Verification |
+|---|---|---|
+| 🌐 **Introduction to Generative AI** | Google | [Verify Credential](https://www.skills.google/public_profiles/1ff3c1eb-3178-4ea9-b510-8cb4b7d8f3e9/badges/26804886) |
+| 🤖 **5-Day AI Agents Intensive** | Kaggle | [Verify Credential](https://www.skills.google/public_profiles/1ff3c1eb-3178-4ea9-b510-8cb4b7d8f3e9/badges/26804886) |
+| 🧠 **AI Fluency: Framework & Foundations** | Anthropic | [Verify Credential (ekreczyjtn44)](https://verify.skilljar.com/c/ekreczyjtn44) |
+| 📊 **Neo4j Certified Professional** | Neo4j | [Verify Credential](https://graphacademy.neo4j.com/c/dacdaa1e-cf97-4a3b-a700-bcda10bb4beb) |
+| ⚡ **Agents and Workflows** | OpenAI | [Verify Credential (2ktff5e124)](https://academy.openai.com/public/certificate/2ktff5e124) |
+| 🔬 **AI Foundations** | OpenAI | [Verify Credential (puxwd6lr7l)](https://academy.openai.com/public/certificate/puxwd6lr7l) |
+| 💬 **Claude 101** | Anthropic | [Verify Credential (gwu9k3ssg5dm)](https://verify.skilljar.com/c/gwu9k3ssg5dm) |
+| 🛠️ **Claude Platform 101** | Anthropic | [Verify Credential (oboayu8hwqjh)](https://verify.skilljar.com/c/oboayu8hwqjh) |
+| 💻 **Claude Code in Action** | Anthropic | [Verify Credential (j6mppqbpg6y9)](https://verify.skilljar.com/c/j6mppqbpg6y9) |
+| 🕸️ **Graph Data Modeling Fundamentals** | Neo4j | [Verify Credential](https://graphacademy.neo4j.com/c/21680346-b711-468c-8a05-42dc2627ad2e/) |
+| 📈 **Neo4j Fundamentals** | Neo4j | [Verify Credential](https://graphacademy.neo4j.com/c/0a401c76-3c57-4f30-b470-9584d01ff6a1/) |
+
+---
+
 ### 📊 GitHub Activity & Stats
 
 <div align="center">
