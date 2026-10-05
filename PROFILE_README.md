@@ -11,6 +11,7 @@
 <br/>
 
 [![Projects Counter](https://img.shields.io/badge/Projects-15%2B%20Builds-0ea5e9?style=flat-square&logo=git&logoColor=white)](https://haseebarif11.github.io/#projects)
+[![Certifications](https://img.shields.io/badge/Certifications-11%20Credentials-f59e0b?style=flat-square&logo=google&logoColor=white)](https://haseebarif11.github.io/#certifications)
 [![PyPI urdukit](https://img.shields.io/badge/PyPI-urdukit%20v0.1.0-38bdf8?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/urdukit/)
 [![Contributions](https://img.shields.io/badge/Contributions-100%2B%20Commits-10b981?style=flat-square&logo=github&logoColor=white)](https://github.com/haseebarif11)
 [![Status](https://img.shields.io/badge/Status-Actively%20Building-a855f7?style=flat-square)](https://haseebarif11.github.io/)
