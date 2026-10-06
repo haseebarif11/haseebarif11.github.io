@@ -104,14 +104,6 @@ Tools:        Git, Linux, Docker, VS Code, Kaggle
 | 🕸️ **Graph Data Modeling Fundamentals** | Neo4j | [Verify Credential](https://graphacademy.neo4j.com/c/21680346-b711-468c-8a05-42dc2627ad2e/) |
 | 📈 **Neo4j Fundamentals** | Neo4j | [Verify Credential](https://graphacademy.neo4j.com/c/0a401c76-3c57-4f30-b470-9584d01ff6a1/) |
 
----
-
-### 📊 GitHub Activity & Stats
-
-<div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=haseebarif11&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" alt="Haseeb's GitHub Stats" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=haseebarif11&layout=compact&theme=tokyonight&hide_border=true" alt="Top Languages" />
-</div>
 
 ---
 
