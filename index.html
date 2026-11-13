@@ -3879,6 +3879,17 @@
             Vision</span><span class="chip">Operating Systems</span><span class="chip">Programming for AI</span><span
             class="chip">Front-End Web Dev</span></div>
       </div>
+
+      <div class="edu-card rv">
+        <span class="edu-badge" style="background:rgba(103,232,249,.08);border:1px solid rgba(103,232,249,.28);color:var(--cyan);">Internship</span>
+        <div class="edu-deg">Generative AI &amp; Prompt Engineering</div>
+        <div class="edu-inst">NeuroFive Solutions</div>
+        <div class="edu-meta"><span>Issued Jul 2026</span><span>Virtual Internship</span><span>July 2026 Cohort</span></div>
+        <p class="edu-desc">Completed a virtual internship specialising in Generative AI and Prompt Engineering. Acquired hands-on experience with LLM prompt design, chain-of-thought reasoning, and responsible AI practices.</p>
+        <div class="chips"><span class="chip">Generative AI</span><span class="chip">Prompt Engineering</span><span class="chip">LLMs</span><span class="chip">Chain-of-Thought</span></div>
+        <button onclick="document.getElementById('nf-cert-modal').style.display='flex'" style="display:inline-flex;align-items:center;gap:6px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--cyan);margin-top:12px;background:transparent;border:none;padding:0;cursor:pointer;">View Certificate &#10230;</button>
+      </div>
+
       <div class="edu-card rv">
         <span class="edu-badge eb-cert">Internship</span>
         <div class="edu-deg">Automation &amp; Engineering</div>
@@ -3944,6 +3955,32 @@
       <h2 class="sec-ttl rv">Where I've <span class="shine-word">Worked</span></h2>
     </div>
     <div class="exp-tl">
+
+      <div class="exp-item rv">
+        <div class="exp-card">
+          <div class="exp-hdr">
+            <div>
+              <div class="exp-ttl">Generative AI &amp; Prompt Engineering Intern</div>
+              <div class="exp-co">NeuroFive Solutions &middot; Virtual</div>
+            </div>
+            <span class="exp-dt">Jul 2026 &middot; Virtual</span>
+          </div>
+          <p class="exp-desc">Completed a virtual internship in Generative AI &amp; Prompt Engineering as part of the July 2026 Cohort at NeuroFive Solutions, focusing on applied LLM techniques, prompt design patterns, and real-world AI workflows.</p>
+          <ul class="exp-bul">
+            <li>Studied and applied advanced <strong>prompt engineering</strong> strategies including chain-of-thought, few-shot, and system-level prompting</li>
+            <li>Explored <strong>Generative AI</strong> architectures and APIs for building intelligent, context-aware applications</li>
+            <li>Practiced crafting effective prompts for LLMs to automate content generation, reasoning tasks, and structured outputs</li>
+            <li>Developed an understanding of responsible AI, hallucination mitigation, and evaluation of LLM responses</li>
+          </ul>
+          <div class="exp-tags">
+            <span class="etag">Generative AI</span><span class="etag">Prompt Engineering</span><span class="etag">LLMs</span><span class="etag">Chain-of-Thought</span><span class="etag">Few-Shot Learning</span><span class="etag">NeuroFive Solutions</span>
+          </div>
+          <button onclick="document.getElementById('nf-cert-modal').style.display='flex'" style="display:inline-flex;align-items:center;gap:6px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--cyan);margin-top:14px;background:transparent;border:1px solid rgba(103,232,249,0.3);border-radius:8px;padding:7px 16px;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(103,232,249,0.08)'" onmouseout="this.style.background='transparent'">
+            &#127885; View Certificate &rarr;
+          </button>
+        </div>
+      </div>
+
       <div class="exp-item rv">
         <div class="exp-card">
           <div class="exp-hdr">
@@ -3975,6 +4012,15 @@
       </div>
     </div>
   </section>
+
+  <!-- NeuroFive Certificate Modal -->
+  <div id="nf-cert-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)this.style.display='none'">
+    <div style="position:relative;max-width:780px;width:100%;animation:fuAnim .35s ease;">
+      <button onclick="document.getElementById('nf-cert-modal').style.display='none'" style="position:absolute;top:-16px;right:-16px;width:36px;height:36px;border-radius:50%;background:var(--cardGrad);border:1px solid var(--border);color:var(--cyan);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:1;">&#10005;</button>
+      <img src="neurofive-cert.png" alt="NeuroFive Solutions - Generative AI and Prompt Engineering Internship Certificate - Haseeb Arif, July 2026 Cohort" style="width:100%;border-radius:16px;border:1px solid rgba(103,232,249,0.25);box-shadow:0 32px 80px rgba(0,0,0,0.6);" />
+      <p style="text-align:center;margin-top:12px;font-size:.78rem;color:var(--muted2);letter-spacing:.06em;">NeuroFive Solutions &middot; Certificate ID: 26070843 &middot; Verify at neurofivesolutions.com/verify</p>
+    </div>
+  </div>
 
   <section id="projects" style="padding-top:0;">
     <div class="sec-hd">
@@ -4693,11 +4739,20 @@
     <div class="sec-hd">
       <div class="sec-lbl">Licenses &amp; Certifications</div>
       <h2 class="sec-ttl rv">Professional <span class="shine-word">Certificates</span></h2>
-      <p style="color:var(--muted2);max-width:620px;margin:8px auto 0;font-size:0.95rem;text-align:center;">11 Verified credentials across Google, Anthropic, OpenAI, Neo4j, and Kaggle with live verification links.</p>
+      <p style="color:var(--muted2);max-width:620px;margin:8px auto 0;font-size:0.95rem;text-align:center;">12 Verified credentials across Google, Anthropic, OpenAI, Neo4j, Kaggle, and NeuroFive Solutions with live verification links.</p>
     </div>
     <div class="edu-grid" id="cert-grid">
 
       <!-- VISIBLE: first 3 -->
+      <div class="edu-card rv cert-card" style="cursor:pointer;" onclick="document.getElementById('nf-cert-modal').style.display='flex'">
+        <div class="edu-deg" style="color:var(--text); font-size:0.85rem;">Generative AI &amp; Prompt Engineering</div>
+        <div class="edu-inst" style="color:var(--muted2);">NeuroFive Solutions</div>
+        <div class="edu-meta"><span>Jul 2026</span><span>Certificate ID: 26070843</span></div>
+        <div class="chips"><span class="chip">Generative AI</span><span class="chip">Prompt Engineering</span><span class="chip">LLMs</span><span class="chip">NeuroFive</span></div>
+        <span style="display:inline-flex;align-items:center;gap:5px;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--cyan);margin-top:10px;">&#127885; View Certificate</span>
+      </div>
+
+
       <a class="edu-card rv cert-card" href="https://graphacademy.neo4j.com/c/dacdaa1e-cf97-4a3b-a700-bcda10bb4beb"
         target="_blank" rel="noopener" style="text-decoration:none;display:block;cursor:pointer;">
         <div class="edu-deg" style="color:var(--text); white-space:nowrap; font-size:0.85rem;">Neo4j Certified
